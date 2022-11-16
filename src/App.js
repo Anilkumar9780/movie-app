@@ -1,25 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const App = () => {
+    // axios.get(' https://api.themoviedb.org/3/trending/movie/day?api_key=460ede70f28006cdd5dbe5510d0323a1')
+    return (
+        <div>
+            app
+        </div>
+    );
 }
 
-export default App;
