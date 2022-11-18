@@ -9536,7 +9536,7 @@ header .top-search input::-webkit-input-placeholder {
 }
 
 header .top-search input {
-  background: url('../img/uploads/topsearch.png') no-repeat right 20px center;
+  /* background: url('../img/uploads/topsearch.png') no-repeat right 20px center; */
 }
 
 header #nav-icon1 {
