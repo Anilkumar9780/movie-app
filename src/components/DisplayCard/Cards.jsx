@@ -4,6 +4,7 @@ import React from 'react';
 // package
 import PropTypes from 'prop-types';
 
+
 export const Movie = ({
     // get props
     poster_path,
@@ -38,6 +39,6 @@ Movie.propTypes = {
     name: PropTypes.string.isRequired,
     media_type: PropTypes.string.isRequired,
     vote_average: PropTypes.number.isRequired,
-    overview:PropTypes.string.isRequired,
-    first_air_date:PropTypes.string.isRequired
+    overview: PropTypes.string.isRequired,
+    first_air_date: PropTypes.string.isRequired
 }

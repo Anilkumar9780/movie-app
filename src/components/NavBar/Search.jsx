@@ -3,40 +3,46 @@
 import React, { useState } from 'react';
 
 // images
-import img from '../img/logo1.png';
-import img1 from '../img/uploads/topsearch.png';
-
-// style
-import '../css/plugins.css';
-import '../css/style.css';
+import img from '../../img/logo1.png';
+import img1 from '../../img/uploads/topsearch.png';
 
 // package
-import axios from 'axios';
+import { toast } from 'react-toastify';
+
+//component
+import { GET_SERACH_LIST } from '../../Service/Service';
 
 export const NavBar = ({
+  // props
   setMovieList,
-  movieList
 }) => {
+  // states
   const [searchMovies, setSearchMovies] = useState('');
   const [mediaType, setMediaType] = useState();
-  const [error, setError] = useState();
 
+  /** 
+   * onchange input search  
+   * @param {object} event 
+   */
   const handleSelectOnchange = (event) => {
     setMediaType(event.target.value);
-  }
+  };
 
+  /**
+   * submit handle search 
+   */
   const handlesearch = async () => {
-    axios.get(`https://api.themoviedb.org/3/search/${mediaType}?api_key=5e08d71020658f7d21004276635bdf7f&query=${searchMovies}&page=1`).then(res => {
-      setMovieList(res.data.results);
-      if (res.data.results == '') {
-        setError("Oops!")
-      }
-      else {
-        setError(" ")
-      }
-    })
+    try {
+      const { data } = await GET_SERACH_LIST(mediaType, searchMovies);
+      setMovieList(data.results);
+      console.log(data.results)
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
     setSearchMovies('')
-  }
+  };
 
   return (
     <>

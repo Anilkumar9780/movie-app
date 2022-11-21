@@ -1,60 +1,27 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
-// component 
-import { AUTO_SCROLL_PAGINATION } from '../Service/Service';
-import { Movie } from './MovieList/MovieCards';
+//component
 import { Footer } from '../Footer/Footer'
+import { NavBar } from '../NavBar/Search';
 
 // images
-import img2 from '../img/uploads/ads1.png'
-import facebook from '../img/facebook.jpg';
-import Tweet from '../img/tweet.png'
+import img2 from '../../img/uploads/ads1.png'
+import facebook from '../../img/facebook.jpg';
+import Tweet from '../../img/tweet.png'
+import { Movie } from '../DisplayCard/Cards';
 
-// package
-import { toast } from 'react-toastify';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { NavBar } from '../Search/NavBar';
-
-export const MovieCard = () => {
-
-  //states
-  const [currPage] = useState(1);
-  const [movieList, setMovieList] = useState([]);
-
-  /**
-   *  get movie list 
-   */
-  const GetMoreMovie = async () => {
-    try {
-      const { data } = await AUTO_SCROLL_PAGINATION(currPage);
-      setMovieList([...movieList, ...data.results]);
-    } catch (error) {
-      toast.error(error, {
-        position: toast.POSITION.TOP_RIGHT
-      });
-    }
-  }
-
-  /**
-   *  dependency passing first time render
-   */
-  useEffect(() => {
-    GetMoreMovie()
-  }, [])
-
+export const Home = () => {
   return (
     <Fragment>
       <NavBar
-        setMovieList={setMovieList}
-        movieList={movieList}
       />
       <div className="page-single">
         <div className="container">
           <div className="row ipad-width">
             <div className="col-md-8 col-sm-12 col-xs-12">
               <div className="topbar-filter">
-                <p>Found <span>{movieList.length} movies</span> in total</p>
+                <p>Found <span> movies</span> in total</p>
                 <label>Sort by:</label>
                 <select>
                   <option value="popularity">Descending</option>
@@ -68,31 +35,7 @@ export const MovieCard = () => {
                 <a href="moviegrid.html" className="grid"><i className="ion-grid active"></i></a>
               </div>
               <div className="flex-wrap-movielist">
-                <div id="scrollableDiv" style={{ height: "200vh", overflow: "auto" }}>
-                  <InfiniteScroll
-                    dataLength={movieList.length}
-                    next={GetMoreMovie}
-                    hasMore={true}
-                    loader={<h3> Loading...</h3>}
-                    endMessage={<h4>Nothing more to show</h4>}
-                    scrollThreshold={0.5}
-                    scrollableTarget="scrollableDiv"
-                  >
-                    {movieList.map((movies, index) => {
-                      return <div className="col-md-3" key={index}>
-                        <Movie
-                          first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}
-                          overview={movies.overview}
-                          poster_path={movies.poster_path ? movies.poster_path : movies.backdrop_path}
-                          name={movies.original_name ? movies.original_name : movies.original_title}
-                          media_type={movies.media_type}
-                          vote_average={movies.vote_average}
-                          original_language={movies.original_language}
-                        />
-                      </div>
-                    })}
-                  </InfiniteScroll>
-                </div>
+                <Movie />
               </div>
             </div>
             <div className="col-md-4 col-sm-12 col-xs-12">

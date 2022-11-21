@@ -5,18 +5,21 @@ import axios from "axios";
 import { URLS } from "./Config/URL";
 
 /**
- * serach movie
- * @param {string} mediaType 
- * @param {string} searchMovies 
- * @returns array
- */
-export const SEARCH_MOVIE_CATEGORY = async (mediaType, searchMovies) => {
-  return await axios.get(`${URLS.GET_MOVIE_SEARCH}${mediaType}?api_key=5e08d71020658f7d21004276635bdf7f&query=${searchMovies}&page=1`);
-};
-
-/**
  * Get Movie List
  */
-export const AUTO_SCROLL_PAGINATION = async (currPage) => {
-  return await axios.get(`${URLS.GET_MOVIE_LIST}&page=${currPage}&total_page=1000`)
+export const GET_TRENDING_MOVIE_LIST = async (currPage) => {
+  return await axios.get(`${URLS.GET_MOVIE_LIST}/3/trending/all/day?api_key=460ede70f28006cdd5dbe5510d0323a1&page=${currPage}&total_page=1000`)
+}
+
+export const GET_MOVIE_LIST = async (currPage) => {
+  return await axios.get(`${URLS.GET_MOVIE_LIST}/3/movie/popular?api_key=460ede70f28006cdd5dbe5510d0323a1&page=${currPage}&total_page=1000`)
+}
+
+export const GET_TVSHOW_LIST = async (currPage) => {
+  return await axios.get(`${URLS.GET_MOVIE_LIST}/3/movie/popular?api_key=460ede70f28006cdd5dbe5510d0323a1&page=${currPage}&total_page=1000`)
+}
+
+
+export const GET_SERACH_LIST = async (mediaType, searchMovies) => {
+  return await axios.get(`${URLS.GET_MOVIE_LIST}/3/search/${mediaType}?api_key=5e08d71020658f7d21004276635bdf7f&query=${searchMovies}&page=1`)
 }

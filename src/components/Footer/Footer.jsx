@@ -2,44 +2,68 @@
 import React, { useState } from 'react';
 
 // image
-import img from '../img/logo1.png'
+import img from '../../img/logo1.png'
 
-//package Material-ui
+//mui-material package
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
+import Box from '@mui/material/Box';
 import MovieIcon from '@mui/icons-material/Movie';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
+// package
+import { Link } from 'react-router-dom';
 
-export const Footer = () => {
+export const Footer = ({
+	Get_Movie_List,
+	Get_TVShow_List,
+	Get_Trending_List
+}) => {
 	// state
-	const [selected, setSelected] = useState(0);
+	const [value, setValue] = useState();
+
 	return (
 		<>
+			<div className="fixed-bottom">
+				<Box sx={{
+					width: "100%",
+				}}>
+
+					<BottomNavigation
+						showLabels
+						value={value}
+						onChange={(_event, newValue) => {
+							setValue(newValue);
+						}}
+					>
+						<Link to="/movies">
+							<BottomNavigationAction
+								onClick={Get_Movie_List}
+								label="Movies"
+								icon={<MovieIcon style={{ fontSize: 30 }} />}
+							/>
+						</Link>
+						<Box />
+						<Link to="/trending" >
+							<BottomNavigationAction
+								onClick={Get_TVShow_List}
+								label="TV Show"
+								icon={<LiveTvIcon style={{ fontSize: 30 }} />}
+							/>
+						</Link>
+						<Box />
+						<Link to="/tvshow">
+							<BottomNavigationAction
+								onClick={Get_Trending_List}
+								label="Trending"
+								icon={<WhatshotIcon style={{ fontSize: 30 }} />}
+							/>
+						</Link>
+					</BottomNavigation>
+				</Box>
+			</div>
 			<footer className="ht-footer">
-				<BottomNavigation
-					value={selected}
-					onChange={(value, newValue) => {
-						setSelected(newValue);
-					}}
-					style={{
-						width: "100%",
-						display: "flex",
-						position: "absolute", fontSize: '103px'
-					}}
-				>
-					<BottomNavigationAction
-						label="Trending"
-						icon={<WhatshotIcon />} />
-					<BottomNavigationAction
-						label="Movies"
-						icon={<MovieIcon />}
-					/>
-					<BottomNavigationAction
-						label="TV Shows"
-						icon={<LiveTvIcon />} />
-				</BottomNavigation>
 				<div className="container">
 					<div className="flex-parent-ft">
 						<div className="flex-child-ft item1">
@@ -95,7 +119,7 @@ export const Footer = () => {
 					</div>
 				</div>
 			</footer>
-
 		</>
 	)
 }
+
