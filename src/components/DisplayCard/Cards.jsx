@@ -3,6 +3,7 @@ import React from 'react';
 
 // package
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 
 export const Movie = ({
@@ -17,10 +18,16 @@ export const Movie = ({
     return (
         <>
             <div className="movie-item-style-2 movie-item-style-1" >
-                <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
-                <div className="hvr-inner">
-                    <a> Read more <i className="ion-android-arrow-dropright"></i> </a>
-                </div>
+                {poster_path ?
+                    <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
+                    :
+                    <div className={"no-image"}>No Image Found</div>
+                }
+                <Link to='/detalis' >
+                    <div className="hvr-inner">
+                        <a> Read more <i className="ion-android-arrow-dropright"></i> </a>
+                    </div>
+                </Link>
                 <div className="mv-item-infor">
                     <h6><a>{name}</a></h6>
                     <p><span style={{ color: "red" }}>{media_type}</span></p>

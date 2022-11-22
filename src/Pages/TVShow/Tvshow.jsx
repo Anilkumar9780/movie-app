@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 // package
@@ -23,13 +23,20 @@ export const TvShow = () => {
         try {
             const { data } = await GET_TVSHOW_LIST(currPage);
             setTvShowList([...tvShowList, ...data.results]);
-            console.log(data.results)
         } catch (error) {
             toast.error(error, {
                 position: toast.POSITION.TOP_RIGHT
             });
         }
     };
+
+    /**
+     * passing dep
+     */
+    useEffect(() => {
+        getTVShowList();
+    }, [])
+
     return (
         <>
             <InfiniteScroll

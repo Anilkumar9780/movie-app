@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 
 //component
 import { GET_SERACH_LIST } from '../../Service/Service';
+import { Link } from 'react-router-dom';
 
 export const NavBar = ({
   // props
@@ -44,6 +45,7 @@ export const NavBar = ({
     setSearchMovies('')
   };
 
+  
   return (
     <>
       <header className="ht-header ">
@@ -70,7 +72,7 @@ export const NavBar = ({
                     Home
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><a href="index-2.html">Home 01</a></li>
+                    <li><Link to="/" href="index-2.html">Home</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
@@ -78,21 +80,17 @@ export const NavBar = ({
                     movies
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li className="dropdown">
-                      <a href="#" className="dropdown-toggle" data-toggle="dropdown" >Movie grid</a>
-                      <ul className="dropdown-menu level2">
-                        <li><a href="moviegrid.html">Movie grid</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="movielist.html">Movie list</a></li>
+                    <li><Link to="/" href="movielist.html">Movies</Link></li>
+                    <li><Link to="/trending" href="movielist.html">Trending Movies</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
                   <a className="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                    celebrities
+                    Tv Show
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><a href="celebritygrid01.html">celebrity grid 01</a></li>
+                    <li><Link to='/tvshow'>Tv Series</Link></li>
+                    <li><Link to='/trending'>Trending Tv Series</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
@@ -100,7 +98,7 @@ export const NavBar = ({
                     news
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><a href="bloglist.html">blog List</a></li>
+                    <li><a href="bloglist.html">blog </a></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
@@ -108,19 +106,11 @@ export const NavBar = ({
                     community
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><a href="userfavoritegrid.html">user favorite grid</a></li>
+                    <li><a href="userfavoritegrid.html">user favorite </a></li>
                   </ul>
                 </li>
               </ul>
               <ul className="nav navbar-nav flex-child-menu menu-right">
-                <li className="dropdown first">
-                  <a className="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                    pages
-                  </a>
-                  <ul className="dropdown-menu level1">
-                    <li><a href="landing.html">Landing</a></li>
-                  </ul>
-                </li>
                 <li><a href="#">Help</a></li>
                 <li className="loginLink"><a href="#">LOG In</a></li>
                 <li className="btn signupLink"><a href="#">sign up</a></li>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // package
 import { GET_MOVIE_LIST } from '../../Service/Service';
@@ -20,13 +20,20 @@ export const Movies = () => {
         try {
             const { data } = await GET_MOVIE_LIST(currPage);
             setMovieList([...movieList, ...data.results]);
-            console.log(data.results)
         } catch (error) {
             toast.error(error, {
                 position: toast.POSITION.TOP_RIGHT
             });
         }
     };
+
+    /**
+     * passing dep
+     */
+    useEffect(() => {
+        getMovieList();
+    }, []);
+
     return (
         <>
             <InfiniteScroll

@@ -8,6 +8,7 @@ import img from '../../img/logo1.png'
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Box';
 import MovieIcon from '@mui/icons-material/Movie';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
@@ -15,53 +16,28 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 // package
 import { Link } from 'react-router-dom';
 
-export const Footer = ({
-	Get_Movie_List,
-	Get_TVShow_List,
-	Get_Trending_List
-}) => {
-	// state
+export const Footer = () => {
 	const [value, setValue] = useState();
-
+	const ref = React.useRef(null);
 	return (
 		<>
 			<div className="fixed-bottom">
-				<Box sx={{
-					width: "100%",
-				}}>
-
-					<BottomNavigation
-						showLabels
-						value={value}
-						onChange={(_event, newValue) => {
-							setValue(newValue);
-						}}
-					>
-						<Link to="/movies">
-							<BottomNavigationAction
-								onClick={Get_Movie_List}
-								label="Movies"
-								icon={<MovieIcon style={{ fontSize: 30 }} />}
-							/>
-						</Link>
-						<Box />
-						<Link to="/trending" >
-							<BottomNavigationAction
-								onClick={Get_TVShow_List}
-								label="TV Show"
-								icon={<LiveTvIcon style={{ fontSize: 30 }} />}
-							/>
-						</Link>
-						<Box />
-						<Link to="/tvshow">
-							<BottomNavigationAction
-								onClick={Get_Trending_List}
-								label="Trending"
-								icon={<WhatshotIcon style={{ fontSize: 30 }} />}
-							/>
-						</Link>
-					</BottomNavigation>
+				<Box sx={{ pb: 2 , width: 250 }} ref={ref}>
+					<Paper>
+						<BottomNavigation
+							showLabels
+							value={value}
+							onChange={(event, newValue) => {
+								setValue(newValue);
+							}}
+						>
+							<Link to='/' ><BottomNavigationAction label="Movies" icon={<MovieIcon style={{ fontSize: 35 }} />} /></Link>
+							<Link to='/trending' ><BottomNavigationAction label="TV Show" icon={<LiveTvIcon style={{ fontSize: 35 }} />} /></Link>
+							<Link to='/tvshow' ><BottomNavigationAction label="Trending" icon={<WhatshotIcon style={{ fontSize: 35 }} />} /></Link>
+						</BottomNavigation>
+					</Paper>
 				</Box>
+
 			</div>
 			<footer className="ht-footer">
 				<div className="container">
