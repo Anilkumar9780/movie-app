@@ -13,17 +13,14 @@ export const Movie = ({
     media_type,
     vote_average,
     first_air_date,
-    overview
+    overview,
+    movie_id
 }) => {
     return (
         <>
-            <div className="movie-item-style-2 movie-item-style-1" >
-                {poster_path ?
-                    <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
-                    :
-                    <div className={"no-image"}>No Image Found</div>
-                }
-                <Link to='/detalis' >
+            <div className="movie-item-style-2 movie-item-style-1">
+                <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
+                <Link to={`/moviedetails/${movie_id}`} >
                     <div className="hvr-inner">
                         <a> Read more <i className="ion-android-arrow-dropright"></i> </a>
                     </div>

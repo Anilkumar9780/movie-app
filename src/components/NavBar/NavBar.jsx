@@ -6,49 +6,130 @@ import React, { useState } from 'react';
 import img from '../../img/logo1.png';
 import img1 from '../../img/uploads/topsearch.png';
 
-// package
-import { toast } from 'react-toastify';
-
-//component
-import { GET_SERACH_LIST } from '../../Service/Service';
+// package router-dom
 import { Link } from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+
+//packages ui
+import Modal from '@mui/material/Modal';
 
 export const NavBar = ({
-  // props
-  setMovieList,
+  searchMovies,
+  setSearchMovies,
+  mediaType,
+  handleSelectOnchange,
+  handlesearch
 }) => {
-  // states
-  const [searchMovies, setSearchMovies] = useState('');
-  const [mediaType, setMediaType] = useState();
+  const [open, setOpen] = useState(false);
+  const [opens, setOpens] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  /** 
-   * onchange input search  
-   * @param {object} event 
-   */
-  const handleSelectOnchange = (event) => {
-    setMediaType(event.target.value);
+  const handleClickLogin = () => {
+    setOpens(true);
   };
 
-  /**
-   * submit handle search 
-   */
-  const handlesearch = async () => {
-    try {
-      const { data } = await GET_SERACH_LIST(mediaType, searchMovies);
-      setMovieList(data.results);
-      console.log(data.results)
-    } catch (error) {
-      toast.error(error, {
-        position: toast.POSITION.TOP_RIGHT
-      });
-    }
-    setSearchMovies('')
+  const handleClicksignUp = () => {
+    setOpen(true);
   };
 
-  
+  const handleClose = () => {
+    setOpen(false);
+    setOpens(false);
+  };
+
   return (
+
     <>
-      <header className="ht-header ">
+      <Modal
+        open={opens}
+        fullScreen={fullScreen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <section className="vh" style={{ marginTop: "200px" }}>
+          <div className="container py-5 h-100">
+            <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
+                  <div className="card-body p-5 text-center">
+                    <a href="#" onClick={handleClose} className="close">x</a>
+                    <h3 className="mb-5">Login</h3>
+                    <div className="form-outline mb-4">
+                      <input type="email" id="typeEmailX-2" placeholder='Email' className="form-control form-control-lg" />
+                      <label className="form-label" for="typeEmailX-2"></label>
+                    </div>
+                    <div className="form-outline mb-4">
+                      <input type="password" id="typePasswordX-2" placeholder='Password' className="form-control form-control-lg" />
+                      <label className="form-label" for="typePasswordX-2"></label>
+                    </div>
+                    <div className="form-check d-flex justify-content-start mb-5">
+                      <input className="form-check-input" type="checkbox" value="" id="form1Example3" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <label className="form-check-label" for="form1Example3"> Remember password </label>
+                    </div>
+                    <button className="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                    <hr className="my-4" />
+                    <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
+                      type="submit"><i className="fa fa-google me-2"></i> Sign in with google</button>
+                    <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
+                      type="submit"><i className="fa fa-facebook me-3"></i> Sign in with facebook</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Modal>
+
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+
+        <section className="vh" style={{ marginTop: "200px"}}>
+          <div className="container py-5 h-100">
+            <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
+                  <div className="card-body p-5 text-center">
+                    <a href="#" onClick={handleClose} className="close">x</a>
+                    <h3 className="mb-5">Sign Up</h3>
+                    <div className="form-outline mb-4">
+                      <input type="text" id="typeEmailX-2" placeholder='Full Name' className="form-control form-control-lg" />
+                      <label className="form-label" for="typeEmailX-2"></label>
+                    </div>
+                    <div className="form-outline mb-4">
+                      <input type="email" id="typeEmailX-2" placeholder='Email' className="form-control form-control-lg" />
+                      <label className="form-label" for="typeEmailX-2"></label>
+                    </div>
+                    <div className="form-outline mb-4">
+                      <input type="password" id="typePasswordX-2" placeholder='Password' className="form-control form-control-lg" />
+                      <label className="form-label" for="typePasswordX-2"></label>
+                    </div>
+                    <div className="form-check d-flex justify-content-start mb-5">
+                      <input className="form-check-input" type="checkbox" value="" id="form1Example3" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <label className="form-check-label" for="form1Example3"> Remember password </label>
+                    </div>
+                    <button className="btn btn-primary btn-lg btn-block" type="submit">sign up</button>
+                    <hr className="my-4" />
+                    <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
+                      type="submit"><i className="fa fa-google me-2"></i> sign up with google</button>
+                    <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
+                      type="submit"><i className="fa fa-facebook me-3"></i> sign up with facebook</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Modal>
+      
+      <header className="ht-header">
         <div className="container">
           <nav className="navbar navbar-default navbar-custom">
             <div className="navbar-header logo">
@@ -64,15 +145,12 @@ export const NavBar = ({
             </div>
             <div className="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav flex-child-menu menu-left">
-                <li className="hidden">
-                  <a href="#page-top"></a>
-                </li>
                 <li className="dropdown first">
-                  <a className="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+                  <a className="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
                     Home
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><Link to="/" href="index-2.html">Home</Link></li>
+                    <li><Link to="/">Home</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
@@ -80,8 +158,8 @@ export const NavBar = ({
                     movies
                   </a>
                   <ul className="dropdown-menu level1">
-                    <li><Link to="/" href="movielist.html">Movies</Link></li>
-                    <li><Link to="/trending" href="movielist.html">Trending Movies</Link></li>
+                    <li><Link to="/">Movies</Link></li>
+                    <li><Link to="/trending">Trending Movies</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown first">
@@ -112,8 +190,8 @@ export const NavBar = ({
               </ul>
               <ul className="nav navbar-nav flex-child-menu menu-right">
                 <li><a href="#">Help</a></li>
-                <li className="loginLink"><a href="#">LOG In</a></li>
-                <li className="btn signupLink"><a href="#">sign up</a></li>
+                <li className="btn loginLink"><a onClick={handleClickLogin}>LOG In</a></li>
+                <li className="btn signupLink"><a onClick={handleClicksignUp}>sign up</a></li>
               </ul>
             </div>
           </nav>
@@ -126,27 +204,11 @@ export const NavBar = ({
               onChange={e => setSearchMovies(e.target.value)}
               value={searchMovies}
               type="text"
-              placeholder="Search for a movie, TV Show or celebrity that you are looking for"
-            />
-            <button className="btn btn-outline-dark" onClick={handlesearch} type="submit"><img src={img1} alt={img1} ></img></button>
+              placeholder="Search for a movie, TV Show or celebrity that you are looking for" />
+            <button className="btn btn-outline-dark" onClick={handlesearch} type="submit"><img src={img1} alt={img1}></img></button>
           </div>
         </div>
       </header>
-      <div className="hero common-hero">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="hero-ct">
-                <h1> movie listing - grid</h1>
-                <ul className="breadcumb">
-                  <li className="active"><a href="#">Home</a></li>
-                  <li> <span className="ion-ios-arrow-right"></span> movie listing</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   )
 }
