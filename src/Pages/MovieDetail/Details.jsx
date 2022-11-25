@@ -129,50 +129,39 @@ export const MovieDetails = () => {
                 <div className="movie-tabs">
                   <div className="tabs">
                     <ul className="tab-links tabs-mv tabs-series">
+
                       <li className={openTab === 1 ? "active" : ""}><a
                         href="#overview"
-                        onClick={e => { e.preventDefault(); setOpenTab(1); }}>Overview</a></li>
+                        onClick={e => { e.preventDefault(); setOpenTab(1); }}
+                      >Overview</a></li>
+
+
                       <li className={openTab === 2 ? "active" : ""}><a href="#reviews"
-                        onClick={e => {
-                          e.preventDefault();
-                          setOpenTab(2);
-                        }}
+                        onClick={e => { e.preventDefault(); setOpenTab(2); }}
                         data-toggle="tab"
                         role="tablist" > Reviews</a></li>
 
                       <li className={openTab === 3 ? "active" : ""}><a href="#cast"
-                        onClick={e => {
-                          e.preventDefault();
-                          setOpenTab(3);
-                        }}
+                        onClick={e => { e.preventDefault(); setOpenTab(3); }}
                         data-toggle="tab"
                         role="tablist"
                       > Cast & Crew </a></li>
 
 
                       <li className={openTab === 4 ? "active" : ""}><a href="#media"
-                        onClick={e => {
-                          e.preventDefault();
-                          setOpenTab(4);
-                        }}
+                        onClick={e => { e.preventDefault(); setOpenTab(4); }}
                         data-toggle="tab"
                         role="tablist"> Media</a></li>
 
 
                       <li className={openTab === 5 ? "active" : ""}><a href="#season"
-                        onClick={e => {
-                          e.preventDefault();
-                          setOpenTab(5);
-                        }}
+                        onClick={e => { e.preventDefault(); setOpenTab(5); }}
                         data-toggle="tab"
                         role="tablist"> Season</a></li>
 
 
                       <li className={openTab === 6 ? "active" : ""}><a href="#moviesrelated"
-                        onClick={e => {
-                          e.preventDefault();
-                          setOpenTab(6);
-                        }}
+                        onClick={e => { e.preventDefault(); setOpenTab(6); }}
                         data-toggle="tab"
                         role="tablist"> Related Shows</a></li>
                     </ul>
@@ -181,7 +170,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="overview" className={"tab" + openTab === 1 ? "active" : "active"}>
+                      <div id="overview"  className={"tab" + openTab === 1 ? "active" : "hidden"}>
                         <div className="row">
                           <div className="col-md-8 col-sm-12 col-xs-12">
                             <p>{movies.overview}</p>
@@ -378,7 +367,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="reviews" className={openTab === 2 ? "active" : "hidden"}>
+                      <div id="reviews" className={"tab" + openTab === 2 ? "active" : "hidden"}>
                         <div className="row">
                           <div className="rv-hd">
                             <div className="div">
