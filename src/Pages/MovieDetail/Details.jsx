@@ -141,7 +141,8 @@ export const MovieDetails = () => {
                         data-toggle="tab"
                         role="tablist" > Reviews</a></li>
 
-                      <li className={openTab === 3 ? "active" : ""}><a href="#cast"
+                      <li className={openTab === 3 ? "active" : ""}>
+                        <a href="#cast"
                         onClick={e => { e.preventDefault(); setOpenTab(3); }}
                         data-toggle="tab"
                         role="tablist"
@@ -170,7 +171,10 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="overview"  className={"tab" + openTab === 1 ? "active" : "hidden"}>
+                      <div id="overview"  
+                      // className={"tab" + openTab === 1 ? "active" : "hidden"}
+                      className={openTab === 1 ? "block" : "hidden"}
+                      >
                         <div className="row">
                           <div className="col-md-8 col-sm-12 col-xs-12">
                             <p>{movies.overview}</p>
@@ -367,7 +371,10 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="reviews" className={"tab" + openTab === 2 ? "active" : "hidden"}>
+                      <div id="reviews" 
+                      // className={"tab" + openTab === 2 ? "active" : "hidden"}
+                      className={openTab === 2 ? "block" : "hidden"}
+                      >
                         <div className="row">
                           <div className="rv-hd">
                             <div className="div">
@@ -442,7 +449,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="cast" className={"tab" + openTab === 3 ? "active" : "hidden"}>
+                      <div id="cast" className={ openTab === 3 ?  "block" : "hidden"}>
                         <div className="row">
                           <h3>Cast & Crew of</h3>
                           <h2>Avengers: Age of Ultron</h2>
@@ -642,7 +649,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="media" className={"tab" + openTab === 4 ? "active" : "hidden"}>
+                      <div id="media" className={ openTab === 4 ?  "block" : "hidden"}>
                         <div className="row">
                           <div className="rv-hd">
                             <div>
@@ -829,7 +836,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="season" className={"tab" + openTab === 5 ? "active" : "hidden"}>
+                      <div id="season" className={ openTab === 5 ?  "block" : "hidden"}>
                         <div className="row">
                           <div className="mvcast-item">
                             <div className="cast-it">
@@ -917,7 +924,7 @@ export const MovieDetails = () => {
 
 
 
-                      <div id="moviesrelated" className={"tab" + openTab === 6 ? "active" : "hidden"}>
+                      <div id="moviesrelated" className={ openTab === 6 ?  "block" : "hidden"}>
                         <div className="row">
                           <h3>Related Movies To</h3>
                           <h2>Skyfall: Quantum of Spectre</h2>
