@@ -4,13 +4,14 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 //component
-import { Loader } from '../../Loader/Loader';
-import { MovieList } from '../../components/DisplayCard/MovieList'
+import { Loader } from '../../components/Loader/Loader';
+import { MovieCard } from '../../components/DisplayMovies/MovieCards'
 
 export const Search = ({
     movieList,
     handlesearch
 }) => {
+    console.log(movieList)
     return (
         <>
             <InfiniteScroll
@@ -22,7 +23,18 @@ export const Search = ({
                 scrollThreshold={0.5}
                 scrollableTarget="scrollableDiv"
             >
-                <MovieList movieList={movieList} />
+                {movieList.map((movies, index) => {
+                    return <div className="col-md-3 col-sm-3" key={index}>
+                        <MovieCard
+                            movie_id={movies.id}
+                            first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}
+                            poster_path={movies.poster_path ? movies.poster_path : movies.backdrop_path}
+                            name={movies.original_name ? movies.original_name : movies.original_title}
+                            vote_average={movies.vote_average ? movies.vote_average : movies.vote_count}
+                            original_language={movies.original_language}
+                        />
+                    </div>
+                })}
             </InfiniteScroll>
         </>
     )

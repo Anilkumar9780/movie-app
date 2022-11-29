@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 // package
 import { GET_TVSHOW_LIST } from '../../Service/Service';
-import { Loader } from '../../Loader/Loader';
-import { MovieList } from '../../components/DisplayCard/MovieList'
+import { Loader } from '../../components/Loader/Loader';
+import { MovieCard } from '../../components/DisplayMovies/MovieCards'
 
 // package
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-//images
-import img from '../../img/logo1.png'
-
 export const TvShow = () => {
-    const [loading, setLoading] = useState(false);
     const [tvShowList, setTvShowList] = useState([]);
     const [currPage] = useState(1);
 
@@ -21,11 +17,9 @@ export const TvShow = () => {
        *  get TVShow List 
        */
     const getTVShowList = async () => {
-        setLoading(true);
         try {
             const { data } = await GET_TVSHOW_LIST(currPage);
             setTvShowList([...tvShowList, ...data.results]);
-            setLoading(false);
         } catch (error) {
             toast.error(error, {
                 position: toast.POSITION.TOP_RIGHT
@@ -40,9 +34,10 @@ export const TvShow = () => {
         getTVShowList();
     }, [])
 
+    console.log(tvShowList)
+
     return (
         <>
-
             <InfiniteScroll
                 dataLength={tvShowList.length}
                 next={getTVShowList}
@@ -52,16 +47,19 @@ export const TvShow = () => {
                 scrollThreshold={0.5}
                 scrollableTarget="scrollableDiv"
             >
-                <MovieList movieList={tvShowList} />
-            </InfiniteScroll>
-            {loading &&
-                <div id="preloader">
-                    <img class="logo" src={img} alt="" width="119" height="58" />
-                    <div id="status">
-                        <span></span>
-                        <span></span>
+                {tvShowList.map((movies, index) => {
+                    return <div className="col-md-3 col-sm-3" key={index}>
+                        <MovieCard
+                            movie_id={movies.id}
+                            first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}
+                            poster_path={movies.poster_path ? movies.poster_path : movies.backdrop_path}
+                            name={movies.original_name ? movies.original_name : movies.original_title}
+                            vote_average={movies.vote_average}
+                            original_language={movies.original_language}
+                        />
                     </div>
-                </div>}
+                })}
+            </InfiniteScroll>
         </>
     )
 }

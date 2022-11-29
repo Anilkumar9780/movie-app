@@ -2,30 +2,48 @@
 import React, { useState, useEffect } from 'react';
 
 //images
-import img5 from '../../img/uploads/series-img.jpg'
+import img1 from '../../img/uploads/ads1.png';
+import img0 from '../../img/uploads/image1.jpg'
+import img2 from '../../img/uploads/image2.jpg'
+import img3 from '../../img/uploads/image3.jpg'
+import img4 from '../../img/uploads/image4.jpg'
+import play from '../../img/uploads/play-vd.png'
+import cat3 from '../../img/uploads/cast3.jpg'
+import cat4 from '../../img/uploads/cast4.jpg'
+import cat5 from '../../img/uploads/cast5.jpg'
+import cat6 from '../../img/uploads/cast6.jpg'
+import item1 from '../../img/uploads/vd-item1.jpg'
+import item2 from '../../img/uploads/vd-item2.jpg'
+import item3 from '../../img/uploads/vd-item3.jpg'
+import item4 from '../../img/uploads/vd-item4.jpg'
+
 
 //packages
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 //component
-import { GET_MOVIE_DETAIL, GET_MOVIE_REVIEWS } from '../../Service/Service';
+import { GET_MOVIE_DETAIL, GET_MOVIE_LIST, GET_MOVIE_REVIEWS, } from '../../Service/Service';
+import { Loader } from '../../components/Loader/Loader';
 
 export const MovieDetails = () => {
   //states
+  let page = 1;
   const [movies, setMovies] = useState([]);
-  const [openTab, setOpenTab] = React.useState(1);
+  const [reviews, setReviews] = useState([]);
+  const [reatedMovie, setReatedMovie] = useState([]);
+  const [openTab, setOpenTab] = useState(1);
   const params = useParams();
   const id = params.movie_id;
 
   /**
    * get Movie Deatil
    */
-  const movieDeatil = async () => {
+  const getMovieDeatil = async () => {
     try {
       const { data } = await GET_MOVIE_DETAIL(id);
       setMovies(data);
-      console.log(data)
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_RIGHT
@@ -36,10 +54,11 @@ export const MovieDetails = () => {
   /**
    * get movie reviews
    */
-  const movieReviews = async () => {
+  const getMovieReviews = async () => {
     try {
       const { data } = await GET_MOVIE_REVIEWS(id);
-      console.log(data.results)
+      setReviews(data.results)
+      page = page + 1;
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_RIGHT
@@ -47,17 +66,28 @@ export const MovieDetails = () => {
     }
   }
 
+  /**
+   * get reated movie
+   */
+  const getReatedMovies = async () => {
+    try {
+      const { data } = await GET_MOVIE_LIST();
+      setReatedMovie(data.results)
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
+  }
 
   /**
    * component did mount
    */
   useEffect(() => {
-    movieDeatil()
-    movieReviews()
+    getReatedMovies()
+    getMovieDeatil()
+    getMovieReviews()
   }, []);
-
-
-
 
   return (
     <>
@@ -74,19 +104,19 @@ export const MovieDetails = () => {
           <div className="row ipad-width2">
             <div className="col-md-4 col-sm-12 col-xs-12">
               <div className="movie-img sticky-sb">
-                <img src={"https://image.tmdb.org/t/p/w500" + movies.poster_path ? movies.poster_path : movies.backdrop_path} alt={movies.poster_path} />
+                <img src={"https://image.tmdb.org/t/p/w500" + movies.poster_path} alt={movies.poster_path} />
                 <div className="movie-btn">
                   <div className="btn-transform transform-vertical red">
-                    <div><a href="#" className="item item-1 redbtn"> <i className="ion-play"></i> Watch Trailer</a>
+                    <div><NavLink href="#" className="item item-1 redbtn"> <i className="ion-play"></i> Watch Trailer</NavLink>
                     </div>
-                    <div><a href="https://www.youtube.com/embed/o-0hcF97wy0"
-                      className="item item-2 redbtn fancybox-media hvr-grow"><i className="ion-play"></i></a>
+                    <div><NavLink href="#"
+                      className="item item-2 redbtn fancybox-media hvr-grow"><i className="ion-play"></i></NavLink>
                     </div>
                   </div>
                   <div className="btn-transform transform-vertical">
-                    <div><a href="#" className="item item-1 yellowbtn"> <i className="ion-card"></i> Buy ticket</a>
+                    <div><NavLink href="#" className="item item-1 yellowbtn"> <i className="ion-card"></i> Buy ticket</NavLink>
                     </div>
-                    <div><a href="#" className="item item-2 yellowbtn"><i className="ion-card"></i></a></div>
+                    <div><NavLink href="#" className="item item-2 yellowbtn"><i className="ion-card"></i></NavLink></div>
                   </div>
                 </div>
               </div>
@@ -95,14 +125,14 @@ export const MovieDetails = () => {
               <div className="movie-single-ct main-content">
                 <h1 className="bd-hd">{movies.original_name ? movies.original_name : movies.original_title} ({movies.original_language})<span> {movies.first_air_date ? movies.first_air_date : movies.release_date}</span></h1>
                 <div className="social-btn">
-                  <a href="#" className="parent-btn"><i className="ion-heart"></i> Add to Favorite</a>
+                  <NavLink href="#" className="parent-btn"><i className="ion-heart"></i> Add to Favorite</NavLink>
                   <div className="hover-bnt">
-                    <a href="#" className="parent-btn"><i className="ion-android-share-alt"></i>share</a>
+                    <NavLink href="#" className="parent-btn"><i className="ion-android-share-alt"></i>share</NavLink>
                     <div className="hvr-item">
-                      <a href="#" className="hvr-grow"><i className="ion-social-facebook"></i></a>
-                      <a href="#" className="hvr-grow"><i className="ion-social-twitter"></i></a>
-                      <a href="#" className="hvr-grow"><i className="ion-social-googleplus"></i></a>
-                      <a href="#" className="hvr-grow"><i className="ion-social-youtube"></i></a>
+                      <NavLink href="https://www.facebook.com" className="hvr-grow"><i className="ion-social-facebook"></i></NavLink>
+                      <NavLink href="https://twitter.com/explore" className="hvr-grow"><i className="ion-social-twitter"></i></NavLink>
+                      <NavLink href="https://www.google.com" className="hvr-grow"><i className="ion-social-googleplus"></i></NavLink>
+                      <NavLink href="https://www.youtube.com" className="hvr-grow"><i className="ion-social-youtube"></i></NavLink>
                     </div>
                   </div>
                 </div>
@@ -110,651 +140,380 @@ export const MovieDetails = () => {
                   <div className="rate">
                     <i className="ion-android-star"></i>
                     <p><span>{movies.vote_average}</span> /10<br />
-                      <span className="rv">56 Reviews</span>
+                      <span className="rv">{reviews.length} Reviews</span>
                     </p>
                   </div>
                   <div className="rate-star">
                     <p>Rate This Movie: </p>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
-                    <i className="ion-ios-star"></i>
+                    {[...Array(7).keys()].map((star) => {
+                      return (<i className="ion-ios-star"></i>);
+                    })}
                     <i className="ion-ios-star-outline"></i>
                   </div>
                 </div>
                 <div className="movie-tabs">
                   <div className="tabs">
                     <ul className="tab-links tabs-mv tabs-series">
-
-                      <li className={openTab === 1 ? "active" : ""}><a
+                      {/* overview tab button  */}
+                      <li className={openTab === 1 ? "active" : ""}><NavLink
                         href="#overview"
                         onClick={e => { e.preventDefault(); setOpenTab(1); }}
-                      >Overview</a></li>
-
-
-                      <li className={openTab === 2 ? "active" : ""}><a href="#reviews"
+                      >Overview</NavLink></li>
+                      {/* reviews tab button */}
+                      <li className={openTab === 2 ? "active" : ""}><NavLink href="#reviews"
                         onClick={e => { e.preventDefault(); setOpenTab(2); }}
                         data-toggle="tab"
-                        role="tablist" > Reviews</a></li>
-
+                        role="tablist" > Reviews</NavLink></li>
+                      {/* tab button cast */}
                       <li className={openTab === 3 ? "active" : ""}>
-                        <a href="#cast"
-                        onClick={e => { e.preventDefault(); setOpenTab(3); }}
-                        data-toggle="tab"
-                        role="tablist"
-                      > Cast & Crew </a></li>
-
-
-                      <li className={openTab === 4 ? "active" : ""}><a href="#media"
-                        onClick={e => { e.preventDefault(); setOpenTab(4); }}
-                        data-toggle="tab"
-                        role="tablist"> Media</a></li>
-
-
-                      <li className={openTab === 5 ? "active" : ""}><a href="#season"
-                        onClick={e => { e.preventDefault(); setOpenTab(5); }}
-                        data-toggle="tab"
-                        role="tablist"> Season</a></li>
-
-
-                      <li className={openTab === 6 ? "active" : ""}><a href="#moviesrelated"
-                        onClick={e => { e.preventDefault(); setOpenTab(6); }}
-                        data-toggle="tab"
-                        role="tablist"> Related Shows</a></li>
+                        <NavLink href="#cast"
+                          onClick={e => { e.preventDefault(); setOpenTab(3); }}
+                          data-toggle="tab"
+                          role="tablist"
+                        > Cast & Crew </NavLink></li>
+                      {/* media tab button */}
+                      <li
+                        className={openTab === 4 ? "active" : ""}><NavLink href="#media"
+                          onClick={e => { e.preventDefault(); setOpenTab(4); }}
+                          data-toggle="tab"
+                          role="tablist"
+                        > Media</NavLink></li>
+                      {/* tab button related shows */}
+                      <li
+                        className={openTab === 6 ? "active" : ""}><NavLink href="#moviesrelated"
+                          onClick={e => { e.preventDefault(); setOpenTab(6); }}
+                          data-toggle="tab"
+                          role="tablist"
+                        > Related Shows</NavLink></li>
                     </ul>
                     <div className="tab-content">
-
-
-
-
-                      <div id="overview"  
-                      // className={"tab" + openTab === 1 ? "active" : "hidden"}
-                      className={openTab === 1 ? "block" : "hidden"}
-                      >
+                      {/* overview tab */}
+                      <div id="overview" className={openTab === 1 ? "block" : "hidden"} style={{ marginLeft: "20px" }}>
                         <div className="row">
                           <div className="col-md-8 col-sm-12 col-xs-12">
                             <p>{movies.overview}</p>
                             <div className="title-hd-sm">
-                              <h4>Current Season</h4>
-                              <a href="#" className="time">View All Seasons <i
-                                className="ion-ios-arrow-right"></i></a>
-                            </div>
-                            {/* <!-- movie cast --> */}
-                            <div className="mvcast-item">
-                              <div className="cast-it">
-                                <div className="cast-left series-it">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                  <div>
-                                    <a href="#">Season 10</a>
-                                    <p>21 Episodes</p>
-                                    <p>Season 10 of The Big Bang Theory premiered on
-                                      September 19, 2016.</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="title-hd-sm">
                               <h4>Videos & Photos</h4>
-                              <a href="#" className="time">All 5 Videos & 245 Photos <i
-                                className="ion-ios-arrow-right"></i></a>
+                              <NavLink href="#" className="time">All 5 Videos & 245 Photos <i className="ion-ios-arrow-right"></i></NavLink>
                             </div>
                             <div className="mvsingle-item ov-item">
-                              <a className="img-lightbox" data-fancybox-group="gal/lery"
-                                href="images/uploads/image41.jpg"><img
-                                  src={process.env.PUBLIC_URL + "images/uploads/image4.jpg"} alt="" /></a>
-                              <a className="img-lightbox" data-fancybox-group="gal/lery"
-                                href="images/uploads/image51.jpg"><img
-                                  src={process.env.PUBLIC_URL + "images/uploads/image5.jpg"} alt="" /></a>
-                              <a className="img-lightbox" data-fancybox-group="gal/lery"
-                                href="images/uploads/image61.jpg"><img
-                                  src={process.env.PUBLIC_URL + "images/uploads/image6.jpg"} alt="" /></a>
+                              <NavLink className="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image11.jpg" ><img src={img0} alt="" /></NavLink>
+                              <NavLink className="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image21.jpg" ><img src={img2} alt="" /></NavLink>
+                              <NavLink className="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image31.jpg" ><img src={img3} alt="" /></NavLink>
                               <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads/image7.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
+                                <img className="vd-img" src={img4} alt="" />
+                                <NavLink className="fancybox-media hvr-grow" href=""><img src={play} alt="" /></NavLink>
                               </div>
                             </div>
                             <div className="title-hd-sm">
                               <h4>cast</h4>
-                              <a href="#" className="time">Full Cast & Crew <i
-                                className="ion-ios-arrow-right"></i></a>
+                              <NavLink href="#" className="time">Full Cast & Crew  <i className="ion-ios-arrow-right"></i></NavLink>
                             </div>
                             {/* <!-- movie cast --> */}
                             <div className="mvcast-item">
                               <div className="cast-it">
                                 <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast1.jpg"} alt="" />
-                                  <a href="#">Robert Downey Jr.</a>
+                                  <img src={cat3} alt="" />
+                                  <NavLink href="#">Mark Ruffalo</NavLink>
                                 </div>
-                                <p>... Robert Downey Jr.</p>
+                                <p>...  Bruce Banner/ Hulk</p>
                               </div>
                               <div className="cast-it">
                                 <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast2.jpg"} alt="" />
-                                  <a href="#">Chris Hemsworth</a>
+                                  <img src={cat4} alt="" />
+                                  <NavLink href="#">Chris Evans</NavLink>
                                 </div>
-                                <p>... Thor</p>
+                                <p>...  Steve Rogers/ Captain America</p>
                               </div>
                               <div className="cast-it">
                                 <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast3.jpg"} alt="" />
-                                  <a href="#">Mark Ruffalo</a>
+                                  <img src={cat5} alt="" />
+                                  <NavLink href="#">Scarlett Johansson</NavLink>
                                 </div>
-                                <p>... Bruce Banner/ Hulk</p>
+                                <p>...  Natasha Romanoff/ Black Widow</p>
                               </div>
                               <div className="cast-it">
                                 <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast4.jpg"} alt="" />
-                                  <a href="#">Chris Evans</a>
+                                  <img src={cat6} alt="" />
+                                  <NavLink href="#">Jeremy Renner</NavLink>
                                 </div>
-                                <p>... Steve Rogers/ Captain America</p>
-                              </div>
-                              <div className="cast-it">
-                                <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast5.jpg"} alt="" />
-                                  <a href="#">Scarlett Johansson</a>
-                                </div>
-                                <p>... Natasha Romanoff/ Black Widow</p>
-                              </div>
-                              <div className="cast-it">
-                                <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast6.jpg"} alt="" />
-                                  <a href="#">Jeremy Renner</a>
-                                </div>
-                                <p>... Clint Barton/ Hawkeye</p>
-                              </div>
-                              <div className="cast-it">
-                                <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast7.jpg"} alt="" />
-                                  <a href="#">James Spader</a>
-                                </div>
-                                <p>... Ultron</p>
-                              </div>
-                              <div className="cast-it">
-                                <div className="cast-left">
-                                  <img src={process.env.PUBLIC_URL + "images/uploads/cast9.jpg"} alt="" />
-                                  <a href="#">Don Cheadle</a>
-                                </div>
-                                <p>... James Rhodes/ War Machine</p>
+                                <p>...  Clint Barton/ Hawkeye</p>
                               </div>
                             </div>
                             <div className="title-hd-sm">
-                              <h4>User reviews</h4>
-                              <a href="#" className="time">See All 56 Reviews <i
-                                className="ion-ios-arrow-right"></i></a>
                             </div>
                             {/* <!-- movie user review --> */}
-                            <div className="mv-user-review-item">
-                              <h3>Best Marvel movie in my opinion</h3>
-                              <div className="no-star">
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star"></i>
-                                <i className="ion-android-star last"></i>
-                              </div>
-                              <p className="time">
-                                17 December 2016 by <a href="#"> hawaiipierson</a>
-                              </p>
-                              <p>This is by far one of my favorite movies from the MCU. The
-                                introduction of new Characters both good and bad also makes the
-                                movie more exciting. giving the characters more of a back story can
-                                also help audiences relate more to different characters better, and
-                                it connects a bond between the audience and actors or characters.
-                                Having seen the movie three times does not bother me here as it is
-                                as thrilling and exciting every time I am watching it. In other
-                                words, the movie is by far better than previous movies (and I do
-                                love everything Marvel), the plotting is splendid (they really do
-                                out do themselves in each film, there are no problems watching it
-                                more than once.</p>
-                            </div>
                           </div>
                           <div className="col-md-4 col-xs-12 col-sm-12">
                             <div className="sb-it">
                               <h6>Director: </h6>
-                              <p><a href="#">Mark Cendrowski</a></p>
+                              <p><NavLink href="#">Joss Whedon</NavLink></p>
                             </div>
                             <div className="sb-it">
                               <h6>Writer: </h6>
-                              <p><a href="#"> Chuck Lorre,</a> <a href="#">Bill Prady</a></p>
+                              <p><NavLink href="#">Joss Whedon,</NavLink> <NavLink href="#">Stan Lee</NavLink></p>
                             </div>
                             <div className="sb-it">
                               <h6>Stars: </h6>
-                              <p><a href="#">Robert Downey Jr,</a> <a href="#">Chris Evans,</a> <a
-                                href="#">Mark Ruffalo,</a><a href="#"> Scarlett Johansson</a>
-                              </p>
+                              <p><NavLink href="#">Robert Downey Jr,</NavLink> <NavLink href="#">Chris Evans,</NavLink> <NavLink href="#">Mark Ruffalo,</NavLink><NavLink href="#"> Scarlett Johansson</NavLink></p>
                             </div>
                             <div className="sb-it">
                               <h6>Genres:</h6>
-                              <p><a href="#">Action, </a> <a href="#"> Sci-Fi,</a> <a
-                                href="#">Adventure</a></p>
+                              {/* {movies.genres.map((genre) => {
+                                return (<p><NavLink href="#">{genre.name}</NavLink> </p>)
+                              })} */}
                             </div>
                             <div className="sb-it">
                               <h6>Release Date:</h6>
-                              <p>{movies.first_air_date ? movies.first_air_date : movies.release_date}(U.S.A)</p>
+                              <p>{movies.release_date} ({movies.original_language})</p>
                             </div>
                             <div className="sb-it">
                               <h6>Run Time:</h6>
-                              {/* <p>{movies.} min</p> */}
+                              <p>{movies.runtime}min</p>
                             </div>
                             <div className="sb-it">
                               <h6>MMPA Rating:</h6>
-                              {/* <p>TV-14</p> */}
+                              <p>PG-{movies.vote_count}</p>
                             </div>
                             <div className="sb-it">
                               <h6>Plot Keywords:</h6>
                               <p className="tags">
-                                <span className="time"><a href="#">superhero</a></span>
-                                <span className="time"><a href="#">marvel universe</a></span>
-                                <span className="time"><a href="#">comic</a></span>
-                                <span className="time"><a href="#">blockbuster</a></span>
-                                <span className="time"><a href="#">final battle</a></span>
+                                <span className="time"><NavLink href="#">superhero</NavLink></span>
+                                <span className="time"><NavLink href="#">marvel universe</NavLink></span>
+                                <span className="time"><NavLink href="#">comic</NavLink></span>
+                                <span className="time"><NavLink href="#">blockbuster</NavLink></span>
+                                <span className="time"><NavLink href="#">final battle</NavLink></span>
                               </p>
                             </div>
                             <div className="ads">
-                              <img src={process.env.PUBLIC_URL + "images/uploads/ads1.png"} alt="/" />
+                              <img src={img1} alt="" />
                             </div>
                           </div>
                         </div>
                       </div>
-
-
-
-
-                      <div id="reviews" 
-                      // className={"tab" + openTab === 2 ? "active" : "hidden"}
-                      className={openTab === 2 ? "block" : "hidden"}
-                      >
+                      {/* reviews tab */}
+                      <div id="reviews" className={openTab === 2 ? "block" : "hidden"} style={{ marginLeft: "20px" }}>
                         <div className="row">
                           <div className="rv-hd">
-                            <div className="div">
-                              <h3>Related Movies To</h3>
-                              <h2>Skyfall: Quantum of Spectre</h2>
+                            <div className="div" >
+                              <h3 >Related Movies To</h3>
+                              <h2 >{movies.original_name ? movies.original_name : movies.original_title}</h2>
+                              &nbsp; &nbsp;&nbsp;
                             </div>
-                            <a href="#" className="redbtn">Write Review</a>
+                            <NavLink href="#" className="redbtn" style={{ marginLeft: "210px" }}>Write Review</NavLink>
                           </div>
                           <div className="topbar-filter">
-                            <p>Found <span>56 reviews</span> in total</p>
+                            <p>Found <span>{reviews.length} reviews</span> in total</p>
                             <label>Filter by:</label>
                             <select>
                               <option value="range">-- Choose option --</option>
                               <option value="saab">-- Choose option 2--</option>
                             </select>
                           </div>
-                          <div className="mv-user-review-item">
-                            <div className="user-infor">
-                              <img src={process.env.PUBLIC_URL + "images/uploads/userava1.jpg"} alt="" />
-                              <div>
-                                <h3>Best Marvel movie in my opinion</h3>
-                                <div className="no-star">
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star"></i>
-                                  <i className="ion-android-star last"></i>
+                          <InfiniteScroll
+                            pageStart={0}
+                            dataLength={reviews.length}
+                            next={() => getMovieReviews()}
+                            hasMore={reviews.length < 40 ? true : false}
+                            scrollableTarget="scrollableDiv"
+                            loader={<div className="loader" key={0}><Loader /></div>}
+                            endMessage={
+                              <p style={{ textAlign: "center" }}>
+                                <b>Yay! You have seen it all</b>
+                              </p>
+                            }
+                          >
+                            {/* mapping users reviews */}
+                            {reviews.map((users, index) => {
+                              return <div className="mv-user-review-item" key={index}>
+                                <div className="user-infor">
+                                  <img src="https://image.tmdb.org/t/p/original/1kks3YnVkpyQxzw36CObFPvhL5f.jpg" alt={movies.avatar_path} />
+                                  <div>
+                                    <h4 style={{ color: "#abb7c4", }} >{users.author}</h4>
+                                    <div className="no-star">
+                                      {users.author_details.rating}/10   &nbsp;&nbsp;
+                                      {[...Array(7).keys()].map((star, ind) => {
+                                        return (
+                                          <i className="ion-android-star" key={ind} />
+                                        );
+                                      })}
+                                      <i className="ion-android-star last"></i>
+                                    </div>
+                                    <p className="time">
+                                      {users.created_at}  by <NavLink href="#"> {users.author_details.username}</NavLink>
+                                    </p>
+                                  </div>
                                 </div>
-                                <p className="time">
-                                  17 December 2016 by <a href="#"> hawaiipierson</a>
-                                </p>
+                                <p>{users.content}</p>
+                              </div>
+                            })}
+                          </InfiniteScroll>
+                        </div>
+                      </div>
+                      {/* cast tap */}
+                      <div id="cast" className={openTab === 3 ? "block" : "hidden"} style={{ marginLeft: "10px" }}>
+                        <div className="rv-hd" style={{ marginLeft: "-4px" }}>
+                          <div className="div" >
+                            <h3 >Cast & Crew of</h3>
+                            <h2 >{movies.original_name ? movies.original_name : movies.original_title}</h2>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-8 col-sm-12 col-xs-12">
+                            <div className="title-hd-sm">
+                              <h4>Directors & Credit Writers</h4>
+                            </div>
+                            <div className="mvcast-item">
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <h4>JW</h4>
+                                  <NavLink href="#">Joss Whedon</NavLink>
+                                </div>
+                                <p>...  Director</p>
                               </div>
                             </div>
-                            <p>This is by far one of my favorite movies from the MCU. The introduction
-                              of new Characters both good and bad also makes the movie more exciting.
-                              giving the characters more of a back story can also help audiences
-                              relate more to different characters better, and it connects a bond
-                              between the audience and actors or characters. Having seen the movie
-                              three times does not bother me here as it is as thrilling and exciting
-                              every time I am watching it. In other words, the movie is by far better
-                              than previous movies (and I do love everything Marvel), the plotting is
-                              splendid (they really do out do themselves in each film, there are no
-                              problems watching it more than once.</p>
-                          </div>
-                          <div className="topbar-filter">
-                            <label>Reviews per page:</label>
-                            <select>
-                              <option value="range">5 Reviews</option>
-                              <option value="saab">10 Reviews</option>
-                            </select>
-                            <div className="pagination2">
-                              <span>Page 1 of 6:</span>
-                              <a className="active" href="#">1</a>
-                              <a href="#">2</a>
-                              <a href="#">3</a>
-                              <a href="#">4</a>
-                              <a href="#">5</a>
-                              <a href="#">6</a>
-                              <a href="#"><i className="ion-arrow-right-b"></i></a>
+                            <div className="title-hd-sm">
+                              <h4>Directors & Credit Writers</h4>
+                            </div>
+                            {/* <!-- movie credit --> */}
+                            <div className="mvcast-item">
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat3} alt="" />
+                                  <NavLink href="#">Mark Ruffalo</NavLink>
+                                </div>
+                                <p>...  Bruce Banner/ Hulk</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat4} alt="" />
+                                  <NavLink href="#">Chris Evans</NavLink>
+                                </div>
+                                <p>...  Steve Rogers/ Captain America</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat5} alt="" />
+                                  <NavLink href="#">Scarlett Johansson</NavLink>
+                                </div>
+                                <p>...  Natasha Romanoff/ Black Widow</p>
+                              </div>
+                            </div>
+                            {/* cast */}
+                            <div className="title-hd-sm">
+                              <h4>Cast</h4>
+                            </div>
+                            <div className="mvcast-item">
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat4} alt="" />
+                                  <NavLink href="#">Chris Evans</NavLink>
+                                </div>
+                                <p>...  Steve Rogers/ Captain America</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat5} alt="" />
+                                  <NavLink href="#">Scarlett Johansson</NavLink>
+                                </div>
+                                <p>...  Natasha Romanoff/ Black Widow</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <img src={cat6} alt="" />
+                                  <NavLink href="#">Jeremy Renner</NavLink>
+                                </div>
+                                <p>...  Clint Barton/ Hawkeye</p>
+                              </div>
+                            </div>
+                            <div className="title-hd-sm">
+                              <h4>Produced by</h4>
+                            </div>
+                            <div className="mvcast-item">
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <h4>LD</h4>
+                                  <NavLink href="#">Louis D’Esposito</NavLink>
+                                </div>
+                                <p>...  executive producer</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <h4>JF</h4>
+                                  <NavLink href="#">Jon Favreau</NavLink>
+                                </div>
+                                <p>...  executive producer</p>
+                              </div>
+                              <div className="cast-it">
+                                <div className="cast-left">
+                                  <h4>KF</h4>
+                                  <NavLink href="#">Kevin Feige</NavLink>
+                                </div>
+                                <p>...  producer</p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-
-
-
-
-
-
-                      <div id="cast" className={ openTab === 3 ?  "block" : "hidden"}>
-                        <div className="row">
-                          <h3>Cast & Crew of</h3>
-                          <h2>Avengers: Age of Ultron</h2>
-                          {/* <!-- //== --> */}
-                          <div className="title-hd-sm">
-                            <h4>Directors & Credit Writers</h4>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JW</h4>
-                                <a href="#">Joss Whedon</a>
-                              </div>
-                              <p>... Director</p>
-                            </div>
-                          </div>
-                          {/* <!-- //== --> */}
-                          <div className="title-hd-sm">
-                            <h4>Directors & Credit Writers</h4>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>SL</h4>
-                                <a href="#">Stan Lee</a>
-                              </div>
-                              <p>... (based on Marvel comics)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JK</h4>
-                                <a href="#">Jack Kirby</a>
-                              </div>
-                              <p>... (based on Marvel comics)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JS</h4>
-                                <a href="#">Joe Simon</a>
-                              </div>
-                              <p>... (character created by: Captain America)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JS</h4>
-                                <a href="#">Joe Simon</a>
-                              </div>
-                              <p>... (character created by: Thanos)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>RT</h4>
-                                <a href="#">Roy Thomas</a>
-                              </div>
-                              <p>... (character created by: Ultron, Vision)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JB</h4>
-                                <a href="#">John Buscema</a>
-                              </div>
-                              <p>... (character created by: Ultron, Vision)</p>
-                            </div>
-                          </div>
-                          {/* <!-- //== --> */}
-                          <div className="title-hd-sm">
-                            <h4>Cast</h4>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast1.jpg"} alt="" />
-                                <a href="#">Robert Downey Jr.</a>
-                              </div>
-                              <p>... Robert Downey Jr.</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast2.jpg"} alt="" />
-                                <a href="#">Chris Hemsworth</a>
-                              </div>
-                              <p>... Thor</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast3.jpg"} alt="" />
-                                <a href="#">Mark Ruffalo</a>
-                              </div>
-                              <p>... Bruce Banner/ Hulk</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast4.jpg"} alt="" />
-                                <a href="#">Chris Evans</a>
-                              </div>
-                              <p>... Steve Rogers/ Captain America</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast5.jpg"} alt="" />
-                                <a href="#">Scarlett Johansson</a>
-                              </div>
-                              <p>... Natasha Romanoff/ Black Widow</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast6.jpg"} alt="" />
-                                <a href="#">Jeremy Renner</a>
-                              </div>
-                              <p>... Clint Barton/ Hawkeye</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast7.jpg"} alt="" />
-                                <a href="#">James Spader</a>
-                              </div>
-                              <p>... Ultron</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/cast9.jpg"} alt="" />
-                                <a href="#">Don Cheadle</a>
-                              </div>
-                              <p>... James Rhodes/ War Machine</p>
-                            </div>
-                          </div>
-                          {/* <!-- //== --> */}
-                          <div className="title-hd-sm">
-                            <h4>Produced by</h4>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>VA</h4>
-                                <a href="#">Victoria Alonso</a>
-                              </div>
-                              <p>... executive producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>MB</h4>
-                                <a href="#">Mitchel Bell</a>
-                              </div>
-                              <p>... co-producer (as Mitch Bell)</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JC</h4>
-                                <a href="#">Jamie Christopher</a>
-                              </div>
-                              <p>... associate producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>LD</h4>
-                                <a href="#">Louis D’Esposito</a>
-                              </div>
-                              <p>... executive producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JF</h4>
-                                <a href="#">Jon Favreau</a>
-                              </div>
-                              <p>... executive producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>KF</h4>
-                                <a href="#">Kevin Feige</a>
-                              </div>
-                              <p>... producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>AF</h4>
-                                <a href="#">Alan Fine</a>
-                              </div>
-                              <p>... executive producer</p>
-                            </div>
-                            <div className="cast-it">
-                              <div className="cast-left">
-                                <h4>JF</h4>
-                                <a href="#">Jeffrey Ford</a>
-                              </div>
-                              <p>... associate producer</p>
-                            </div>
+                      {/* media tap */}
+                      <div id="media" className={openTab === 4 ? "block" : "hidden"} style={{ marginLeft: "20px" }}>
+                        <div className="rv-hd" style={{ marginLeft: "-20px" }} >
+                          <div className="div">
+                            <h3>Videos & Photos of</h3>
+                            <h2>The Big Bang Theory</h2>
                           </div>
                         </div>
-                      </div>
-
-
-
-
-
-
-
-
-
-                      <div id="media" className={ openTab === 4 ?  "block" : "hidden"}>
                         <div className="row">
-                          <div className="rv-hd">
-                            <div>
-                              <h3>Videos & Photos of</h3>
-                              <h2>The Big Bang Theory</h2>
-                            </div>
-                          </div>
                           <div className="title-hd-sm">
                             <h4>Videos <span>(8)</span></h4>
                           </div>
                           <div className="mvsingle-item media-item">
                             <div className="vd-item">
                               <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item1.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
+                                <img className="vd-img" src={item4} alt="" />
+                                <NavLink className="fancybox-media hvr-grow"
+                                ><img
+                                    src={play} alt="" /></NavLink>
                               </div>
                               <div className="vd-infor">
-                                <h6> <a href="#">Trailer: Watch New Scenes</a></h6>
+                                <h6> <NavLink href="#">Interview: Scarlett Johansson</NavLink></h6>
+                                <p className="time"> 3:27</p>
+                              </div>
+                            </div>
+                            <div className="vd-item">
+                              <div className="vd-it">
+                                <img className="vd-img" src={item1} alt="" />
+                                <NavLink className="fancybox-media hvr-grow"
+                                ><img
+                                    src={play} alt="" /></NavLink>
+                              </div>
+                              <div className="vd-infor">
+                                <h6> <NavLink href="#">Featurette: Meet Quicksilver & The Scarlet
+                                  Witch</NavLink></h6>
                                 <p className="time"> 1: 31</p>
                               </div>
                             </div>
                             <div className="vd-item">
                               <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item2.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
+                                <img className="vd-img" src={item2} alt="" />
+                                <NavLink className="fancybox-media hvr-grow"
+                                ><img
+                                    src={play} alt="" /></NavLink>
                               </div>
                               <div className="vd-infor">
-                                <h6> <a href="#">Featurette: “Avengers Re-Assembled</a></h6>
+                                <h6> <NavLink href="#">Interview: Director Joss Whedon</NavLink></h6>
                                 <p className="time"> 1: 03</p>
                               </div>
                             </div>
                             <div className="vd-item">
                               <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item3.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
+                                <img className="vd-img" src={item3} alt="" />
+                                <NavLink className="fancybox-media hvr-grow"
+                                ><img
+                                    src={play} alt="" /></NavLink>
                               </div>
                               <div className="vd-infor">
-                                <h6> <a href="#">Interview: Robert Downey Jr</a></h6>
-                                <p className="time"> 3:27</p>
-                              </div>
-                            </div>
-                            <div className="vd-item">
-                              <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item4.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
-                              </div>
-                              <div className="vd-infor">
-                                <h6> <a href="#">Interview: Scarlett Johansson</a></h6>
-                                <p className="time"> 3:27</p>
-                              </div>
-                            </div>
-                            <div className="vd-item">
-                              <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item1.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
-                              </div>
-                              <div className="vd-infor">
-                                <h6> <a href="#">Featurette: Meet Quicksilver & The Scarlet
-                                  Witch</a></h6>
-                                <p className="time"> 1: 31</p>
-                              </div>
-                            </div>
-                            <div className="vd-item">
-                              <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item2.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
-                              </div>
-                              <div className="vd-infor">
-                                <h6> <a href="#">Interview: Director Joss Whedon</a></h6>
-                                <p className="time"> 1: 03</p>
-                              </div>
-                            </div>
-                            <div className="vd-item">
-                              <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item3.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
-                              </div>
-                              <div className="vd-infor">
-                                <h6> <a href="#">Interview: Mark Ruffalo</a></h6>
-                                <p className="time"> 3:27</p>
-                              </div>
-                            </div>
-                            <div className="vd-item">
-                              <div className="vd-it">
-                                <img className="vd-img" src={process.env.PUBLIC_URL + "images/uploads//vd-item4.jpg"} alt="" />
-                                <a className="fancybox-media hvr-grow"
-                                  href="https://www.youtube.com/embed/o-0hcF97wy0"><img
-                                    src={process.env.PUBLIC_URL + "images/uploads/play-vd.png"} alt="" /></a>
-                              </div>
-                              <div className="vd-infor">
-                                <h6> <a href="#">Official Trailer #2</a></h6>
+                                <h6> <NavLink href="#">Interview: Mark Ruffalo</NavLink></h6>
                                 <p className="time"> 3:27</p>
                               </div>
                             </div>
@@ -762,172 +521,40 @@ export const MovieDetails = () => {
                           <div className="title-hd-sm">
                             <h4>Photos <span> (21)</span></h4>
                           </div>
-                          <div className="mvsingle-item">
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image11.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image1.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image21.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image2.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image31.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image3.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image41.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image4.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image51.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image5.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image61.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image6.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image71.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image7.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image81.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image8.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image91.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image9.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image101.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image10.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image111.jpg"><img
-                                src={process.env.PUBLIC_URL + "images/uploads/image1-1.jpg"} alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image121.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image12.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image131.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image13.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image141.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image14.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image151.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image15.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image161.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image16.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image171.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image17.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image181.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image18.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image191.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image19.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image201.jpg"><img src={process.env.PUBLIC_URL + "images/uploads/image20.jpg"
-                              } alt="" /></a>
-                            <a className="img-lightbox" data-fancybox-group="gal/lery"
-                              href="images/uploads/image211.jpg"><img
-                                src={process.env.PUBLIC_URL + "images/uploads/image2-1.jpg"} alt="" /></a>
-                          </div>
-                        </div>
-                      </div>
-
-
-
-
-
-
-
-                      <div id="season" className={ openTab === 5 ?  "block" : "hidden"}>
-                        <div className="row">
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
+                          <div className="mvsingle-item media-item">
+                            <div className="vd-item">
+                              <div className="vd-it">
+                                <img className="vd-img" src={img0} alt="" />
                               </div>
                             </div>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
+                            <div className="vd-item">
+                              <div className="vd-it">
+                                <img className="vd-img" src={img2} alt="" />
                               </div>
                             </div>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
+                            <div className="vd-item">
+                              <div className="vd-it">
+                                <img className="vd-img" src={img3} alt="" />
                               </div>
                             </div>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mvcast-item">
-                            <div className="cast-it">
-                              <div className="cast-left series-it">
-                                <img src={process.env.PUBLIC_URL + "images/uploads/season.jpg"} alt="" />
-                                <div>
-                                  <a href="#">Season 10</a>
-                                  <p>21 Episodes</p>
-                                  <p>Season 10 of The Big Bang Theory premiered on
-                                    September 19, 2016.</p>
-                                </div>
+                            <div className="vd-item">
+                              <div className="vd-it">
+                                <img className="vd-img" src={img4} alt="" />
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-
-
-
-
-
-
-                      <div id="moviesrelated" className={ openTab === 6 ?  "block" : "hidden"}>
+                      {/* related movies tab */}
+                      <div id="moviesrelated" className={openTab === 6 ? "block" : "hidden"} style={{ marginLeft: "20px" }}>
                         <div className="row">
-                          <h3>Related Movies To</h3>
-                          <h2>Skyfall: Quantum of Spectre</h2>
+                          <div className="rv-hd">
+                            <div className="div" >
+                              <h3 >Related Movies To</h3>
+                              <h2 >Skyfall: Quantum of Spectre</h2>
+                              &nbsp; &nbsp;&nbsp;
+                            </div>
+                          </div>
                           <div className="topbar-filter">
                             <p>Found <span>12 movies</span> in total</p>
                             <label>Sort by:</label>
@@ -940,101 +567,35 @@ export const MovieDetails = () => {
                               <option value="date">Release date Ascending</option>
                             </select>
                           </div>
-                          <div className="movie-item-style-2">
-                            <img src={process.env.PUBLIC_URL + "images/uploads/mv1.jpg"} alt="" />
-                            <div className="mv-item-infor">
-                              <h6><a href="#">oblivion <span>(2012)</span></a></h6>
-                              <p className="rate"><i className="ion-android-star"></i><span>8.1</span> /10</p>
-                              <p className="describe">Earth's mightiest heroes must come together and
-                                learn to fight as a team if they are to stop the mischievous Loki
-                                and his alien army from enslaving humanity...</p>
-                              <p className="run-time"> Run Time: 2h21’ . <span>MMPA: PG-13 </span> .
-                                <span>Release: 1 May 2015</span></p>
-                              <p>Director: <a href="#">Joss Whedon</a></p>
-                              <p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris
-                                Evans,</a> <a href="#"> Chris Hemsworth</a></p>
-                            </div>
-                          </div>
-                          <div className="movie-item-style-2">
-                            <img src={process.env.PUBLIC_URL + "images/uploads/mv2.jpg"} alt="" />
-                            <div className="mv-item-infor">
-                              <h6><a href="#">into the wild <span>(2014)</span></a></h6>
-                              <p className="rate"><i className="ion-android-star"></i><span>7.8</span> /10</p>
-                              <p className="describe">As Steve Rogers struggles to embrace his role in the
-                                modern world, he teams up with a fellow Avenger and S.H.I.E.L.D
-                                agent, Black Widow, to battle a new threat...</p>
-                              <p className="run-time"> Run Time: 2h21’ . <span>MMPA: PG-13 </span> .
-                                <span>Release: 1 May 2015</span></p>
-                              <p>Director: <a href="#">Anthony Russo,</a><a href="#">Joe Russo</a></p>
-                              <p>Stars: <a href="#">Chris Evans,</a> <a href="#">Samuel L.
-                                Jackson,</a> <a href="#"> Scarlett Johansson</a></p>
-                            </div>
-                          </div>
-                          <div className="movie-item-style-2">
-                            <img src={process.env.PUBLIC_URL + "images/uploads/mv3.jpg"} alt="" />
-                            <div className="mv-item-infor">
-                              <h6><a href="#">blade runner <span>(2015)</span></a></h6>
-                              <p className="rate"><i className="ion-android-star"></i><span>7.3</span> /10</p>
-                              <p className="describe">Armed with a super-suit with the astonishing ability
-                                to shrink in scale but increase in strength, cat burglar Scott Lang
-                                must embrace his inner hero and help...</p>
-                              <p className="run-time"> Run Time: 2h21’ . <span>MMPA: PG-13 </span> .
-                                <span>Release: 1 May 2015</span></p>
-                              <p>Director: <a href="#">Peyton Reed</a></p>
-                              <p>Stars: <a href="#">Paul Rudd,</a> <a href="#"> Michael Douglas</a>
+                          {/* mapping reated movie */}
+                          <InfiniteScroll
+                            pageStart={10}
+                            dataLength={reatedMovie.length}
+                            next={() => getReatedMovies()}
+                            hasMore={reviews.length < 40 ? true : false}
+                            scrollableTarget="scrollableDiv"
+                            loader={<div className="loader" key={0}><Loader /></div>}
+                            endMessage={
+                              <p style={{ textAlign: "center" }}>
+                                <b>Yay! You have seen it all</b>
                               </p>
-                            </div>
-                          </div>
-                          <div className="movie-item-style-2">
-                            <img src={process.env.PUBLIC_URL + "images/uploads/mv4.jpg"} alt="" />
-                            <div className="mv-item-infor">
-                              <h6><a href="#">Mulholland pride<span> (2013) </span></a></h6>
-                              <p className="rate"><i className="ion-android-star"></i><span>7.2</span> /10</p>
-                              <p className="describe">When Tony Stark's world is torn apart by a
-                                formidable terrorist called the Mandarin, he starts an odyssey of
-                                rebuilding and retribution.</p>
-                              <p className="run-time"> Run Time: 2h21’ . <span>MMPA: PG-13 </span> .
-                                <span>Release: 1 May 2015</span></p>
-                              <p>Director: <a href="#">Shane Black</a></p>
-                              <p>Stars: <a href="#">Robert Downey Jr., </a> <a href="#"> Guy
-                                Pearce,</a><a href="#">Don Cheadle</a></p>
-                            </div>
-                          </div>
-                          <div className="movie-item-style-2">
-                            <img src={process.env.PUBLIC_URL + "images/uploads/mv5.jpg"} alt="" />
-                            <div className="mv-item-infor">
-                              <h6><a href="#">skyfall: evil of boss<span> (2013) </span></a></h6>
-                              <p className="rate"><i className="ion-android-star"></i><span>7.0</span> /10</p>
-                              <p className="describe">When Tony Stark's world is torn apart by a
-                                formidable terrorist called the Mandarin, he starts an odyssey of
-                                rebuilding and retribution.</p>
-                              <p className="run-time"> Run Time: 2h21’ . <span>MMPA: PG-13 </span> .
-                                <span>Release: 1 May 2015</span></p>
-                              <p>Director: <a href="#">Alan Taylor</a></p>
-                              <p>Stars: <a href="#">Chris Hemsworth, </a> <a href="#"> Natalie
-                                Portman,</a><a href="#">Tom Hiddleston</a></p>
-                            </div>
-                          </div>
-                          <div className="topbar-filter">
-                            <label>Movies per page:</label>
-                            <select>
-                              <option value="range">5 Movies</option>
-                              <option value="saab">10 Movies</option>
-                            </select>
-                            <div className="pagination2">
-                              <span>Page 1 of 2:</span>
-                              <a className="active" href="#">1</a>
-                              <a href="#">2</a>
-                              <a href="#"><i className="ion-arrow-right-b"></i></a>
-                            </div>
-                          </div>
+                            }
+                          >
+                            {reatedMovie.map((movie, index) => {
+                              return <div className="movie-item-style-2" key={index}>
+                                <img src={"https://image.tmdb.org/t/p/w500" + movie.poster_path} alt={movie.poster_path} />
+                                <div className="mv-item-infor">
+                                  <h6><NavLink href="#">{movies.original_name ? movie.original_name : movie.original_title} ({movie.original_language})<span>{movie.first_air_date ? movie.first_air_date : movie.release_date.toString(0.4)}</span></NavLink></h6>
+                                  <p className="rate"><i className="ion-android-star"></i><span>{movie.vote_average}</span> /10</p>
+                                  <p className="describe">{movie.overview}</p>
+                                  <p className="run-time"> Run Time:{movies.runtime}. <span>MMPA: PG-{movie.vote_count}</span> .
+                                    <span>Release: {movie.release_date}</span></p>
+                                </div>
+                              </div>
+                            })}
+                          </InfiniteScroll>
                         </div>
                       </div>
-
-
-
-
-
                     </div>
                   </div>
                 </div>

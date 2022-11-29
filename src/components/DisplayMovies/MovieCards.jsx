@@ -6,14 +6,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
 
-export const Movie = ({
+export const MovieCard = ({
     // get props
     poster_path,
     name,
-    media_type,
     vote_average,
-    first_air_date,
-    overview,
     movie_id
 }) => {
     return (
@@ -27,7 +24,7 @@ export const Movie = ({
                 </Link>
                 <div className="mv-item-infor">
                     <h6><a>{name}</a></h6>
-                    <p><span style={{ color: "red" }}>{media_type}</span></p>
+                    {/* <p><span style={{ color: "red" }}>{media_type}</span></p> */}
                     <p className="rate"><i className="ion-android-star"></i><span> {vote_average}</span> /10</p>
                 </div>
             </div>
@@ -38,11 +35,9 @@ export const Movie = ({
 /**
  *  Props types for our Component
  */
-Movie.propTypes = {
+MovieCard.propTypes = {
     poster_path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    media_type: PropTypes.string.isRequired,
     vote_average: PropTypes.number.isRequired,
-    overview: PropTypes.string.isRequired,
     first_air_date: PropTypes.string.isRequired
 }

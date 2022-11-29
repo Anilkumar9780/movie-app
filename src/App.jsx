@@ -5,15 +5,13 @@ import './css/plugins.css';
 import './css/style.css';
 
 // Component
-import { Home } from './components/Home/Home';
-import { Message } from './PopMessage/Message';
-import Tab from './Pages/MovieDetail/Tab'
+import { HomeRouter } from './Router/HomeRouter';
+import { Message } from './components/PopMessage/Message';
 
 export const App = () => {
     return (
         <div>
-            <Home />
-            <Tab />
+            <HomeRouter />
             <Message />
         </div>
     );
