@@ -5,14 +5,14 @@ import './css/plugins.css';
 import './css/style.css';
 
 // Component
-import { HomeRouter } from './Router/HomeRouter';
-import { Message } from './components/PopMessage/Message';
+import { Router } from './Router/Router';
+import { PopupMessage } from './components';
 
 export const App = () => {
     return (
         <div>
-            <HomeRouter />
-            <Message />
+            <Router />
+            <PopupMessage />
         </div>
     );
 }

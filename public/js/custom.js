@@ -1,5 +1,4 @@
-//preloading for page
-import $ from "jquery";
+//preloading for pag
 
 $(window).on('load', function ($) { // makes sure the whole site is loaded 
 	var status = $('#status');
