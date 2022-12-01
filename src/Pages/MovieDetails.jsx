@@ -145,8 +145,8 @@ import { Loader } from '../components';
                   </div>
                   <div className="rate-star">
                     <p>Rate This Movie: </p>
-                    {[...Array(7).keys()].map((star) => {
-                      return (<i className="ion-ios-star"></i>);
+                    {[...Array(7).keys()].map((star,i) => {
+                      return (<i className="ion-ios-star" key={i}></i>);
                     })}
                     <i className="ion-ios-star-outline"></i>
                   </div>

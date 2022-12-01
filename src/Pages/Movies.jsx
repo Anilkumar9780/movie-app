@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // package
 import { GET_MOVIE_LIST } from '../Service/Service';
-import { MovieCard , Loader } from '../components'
+import { MovieCard, Loader } from '../components'
 
 // package
 import { toast } from 'react-toastify';
@@ -26,9 +26,6 @@ const Movies = () => {
         }
     };
 
-    /**
-     * passing dep
-     */
     useEffect(() => {
         getMovieList();
     }, []);
@@ -38,15 +35,13 @@ const Movies = () => {
         <>
             <InfiniteScroll
                 dataLength={movieList.length}
-                next={getMovieList}
+                next={() => { getMovieList() }}
                 hasMore={true}
                 loader={<Loader />}
                 endMessage={<h4>Nothing more to show</h4>}
-                scrollThreshold={0.5}
-                scrollableTarget="scrollableDiv"
             >
-                {movieList.map((movies, index) => {
-                    return <div className="col-md-3 col-sm-3" key={index}>
+                {movieList && movieList?.map((movies, index) => {
+                    return <div className="col-md-3" key={index}>
                         <MovieCard
                             movie_id={movies.id}
                             first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}

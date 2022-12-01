@@ -33,7 +33,7 @@ const TvShow = () => {
         getTVShowList();
     }, [])
 
-    console.log(tvShowList)
+    // console.log(tvShowList)
 
     return (
         <>

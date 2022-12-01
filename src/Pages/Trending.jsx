@@ -33,7 +33,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
     getTrendingList();
   }, []);
 
-  console.log(trendingList)
+  // console.log(trendingList)
   return (
     <>
       <InfiniteScroll

@@ -1,20 +1,23 @@
+/* eslint-disable no-self-compare */
 import React, { useState } from 'react';
 
 //components
 import { Home, Footer, NavBar, NotFoundPage } from '../components';
-import { MovieDetails } from '../Pages'
+import { MovieDetails, UserProfile } from '../Pages'
 import { GET_SERACH_LIST } from '../Service/Service';
 
 //packages
-import { Routes, Route, } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
 
 export const Router = () => {
     const [movieList, setMovieList] = useState([]);
     const [searchMovies, setSearchMovies] = useState('');
     const [mediaType, setMediaType] = useState();
     const navigate = useNavigate();
+    const location = useLocation();
+    const pathid = location.pathname.split('/moviedetails/');
+
 
     /** 
      * onchange input search  
@@ -49,13 +52,20 @@ export const Router = () => {
                 setSearchMovies={setSearchMovies}
                 setMediaType={setMediaType}
             />
-            {/* <Home movieList={movieList} handlesearch={handlesearch} /> */}
-            <Routes>
-                <Route exact path='/' element={<Home movieList={movieList} handlesearch={handlesearch} />} />
-                <Route exact path='/moviedetails/:movie_id' element={<MovieDetails />} />
-                <Route path='*' exact={true} element={<NotFoundPage />} />
-            </Routes>
+            {
+                location.pathname === `/moviedetails/${pathid[1]}` ?
+                    (
+                        <Routes>
+                            <Route exact path='/userprofile' element={<UserProfile />} />
+                            <Route exact path='/moviedetails/:movie_id' element={<MovieDetails />} />
+                            <Route path='*' exact={true} element={<NotFoundPage />} />
+                        </Routes>
+                    ) : (
+                        <Home movieList={movieList} handlesearch={handlesearch} />
+                    )
+            }
             <Footer />
         </>
     )
 }
+

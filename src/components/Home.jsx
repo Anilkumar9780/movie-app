@@ -9,7 +9,7 @@ import Tweet from '../img/tweet.png'
 import { Movies, Trending, TvShow, Search } from '../Pages';
 
 //packages
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route, NavLink, Link  } from "react-router-dom";
 
 const Home = ({
     movieList,
@@ -24,7 +24,7 @@ const Home = ({
                             <div className="hero-ct">
                                 <h1> movie listing - grid</h1>
                                 <ul className="breadcumb">
-                                    <li className="active"><NavLink href="#">Home</NavLink></li>
+                                    <li className="active"><Link to="/"  >Home</Link></li>
                                     <li> <span className="ion-ios-arrow-right"></span> movie listing</li>
                                 </ul>
                             </div>

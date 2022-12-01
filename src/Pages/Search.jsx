@@ -10,7 +10,7 @@ const Search = ({
     movieList,
     handlesearch
 }) => {
-    console.log(movieList)
+    // console.log(movieList)
     return (
         <>
             <InfiniteScroll

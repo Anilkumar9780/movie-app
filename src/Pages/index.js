@@ -3,6 +3,7 @@ import Movies from './Movies';
 import Search from './Search';
 import Trending from './Trending';
 import TvShow from './Tvshow';
+import UserProfile from './UserProfile';
 
 
 export {
@@ -11,4 +12,5 @@ export {
     Search,
     Trending,
     TvShow,
+    UserProfile
 };

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 // images
-import img from '../img/logo1.png';
+import img4 from '../img/logo1.png';
+import DefaultProfile from '../img/DefaultProfile.jpg'
 import img1 from '../img/uploads/topsearch.png';
 
 // package 
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'
 
 //style
 import '../css/NavBar.css'
@@ -14,6 +16,14 @@ import '../css/NavBar.css'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
+import { DriveFolderUploadOutlined } from "@mui/icons-material";
+
+//firebase component
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "../Service/firebase";
 
 const NavBar = ({
   //props
@@ -28,6 +38,9 @@ const NavBar = ({
   const [opens, setOpens] = useState(false);
   const [sticky, setSticky] = useState(false);
   const [scroll, setScroll] = useState(0);
+  const [img, setImg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -77,6 +90,77 @@ const NavBar = ({
     return () => window.removeEventListener("scroll", progressBarHandler);
   });
 
+  /**
+   * handle login User
+   * @param {object} e 
+   */
+  const handleLogin = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+      toast.success("Login Successfully", {
+        position: toast.POSITION.TOP_RIGHT
+      })
+    } catch (error) {
+      toast.error(error, "Something went wrong", {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      setLoading(false);
+    }
+  };
+
+  /**
+     * handle Register User
+     * @param {object} e 
+     */
+  const handleRegister = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const displayName = e.target[0].value;
+    const email = e.target[1].value;
+    const password = e.target[2].value;
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const storageRef = ref(storage, "usersImages/" + displayName);
+      const uploadTask = uploadBytesResumable(storageRef, img);
+      uploadTask.on(
+        (error) => {
+          toast.error(error, "Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT
+          })
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateProfile(res.user, {
+              displayName,
+              photoURL: downloadURL,
+            });
+            await setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              displayName,
+              email,
+              photoURL: downloadURL,
+            });
+          });
+        }
+      );
+    } catch (error) {
+      toast.error(error, "Something went wrong", {
+        position: toast.POSITION.TOP_RIGHT
+      })
+    }
+    navigate("/")
+    toast.success("Register Successfully", {
+      position: toast.POSITION.TOP_RIGHT
+    });
+    setLoading(false);
+  };
+
+
   return (
     <>
       {/* Login page modal */}
@@ -94,25 +178,40 @@ const NavBar = ({
                 <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
                   <div className="card-body p-5 text-center">
                     <NavLink href="#" onClick={handleClose} className="close">x</NavLink >
-                    <h3 className="mb-5">Login</h3>
-                    <div className="form-outline mb-4">
-                      <input type="email" id="typeEmailX-2" placeholder='Email' className="form-control form-control-lg" />
-                      <label className="form-label" for="typeEmailX-2"></label>
-                    </div>
-                    <div className="form-outline mb-4">
-                      <input type="password" id="typePasswordX-2" placeholder='Password' className="form-control form-control-lg" />
-                      <label className="form-label" for="typePasswordX-2"></label>
-                    </div>
-                    <div className="form-check d-flex justify-content-start mb-5">
-                      <input className="form-check-input" type="checkbox" value="" id="form1Example3" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <label className="form-check-label" for="form1Example3"> Remember password </label>
-                    </div>
-                    <button className="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-                    <hr className="my-4" />
-                    <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
-                      type="submit"><i className="fa fa-google me-2"></i> Sign in with google</button>
-                    <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
-                      type="submit"><i className="fa fa-facebook me-3"></i> Sign in with facebook</button>
+                    <form onSubmit={handleLogin} className="bottomBox">
+                      <h3 className="mb-5">Login</h3>
+                      <div className="form-outline mb-4">
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          id="email"
+                          required
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" for="typeEmailX-2"></label>
+                      </div>
+                      <div className="form-outline mb-4">
+                        <input
+                          type="password"
+                          placeholder="Password"
+                          id="password"
+                          minLength={6}
+                          required
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" for="typePasswordX-2"></label>
+                      </div>
+                      <div className="form-check d-flex justify-content-start mb-5">
+                        <input className="form-check-input" type="checkbox" value="" id="form1Example3" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label className="form-check-label" for="form1Example3"> Remember password </label>
+                      </div>
+                      <button className="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                      <hr className="my-4" />
+                      <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
+                        type="submit"><i className="fa fa-google me-2"></i> Sign in with google</button>
+                      <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
+                        type="submit"><i className="fa fa-facebook me-3"></i> Sign in with facebook</button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -134,29 +233,76 @@ const NavBar = ({
                 <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
                   <div className="card-body p-5 text-center">
                     <NavLink onClick={handleClose} className="close">x</NavLink >
-                    <h3 className="mb-5">Sign Up</h3>
-                    <div className="form-outline mb-4">
-                      <input type="text" id="typeEmailX-2" placeholder='Full Name' className="form-control form-control-lg" />
-                      <label className="form-label" for="typeEmailX-2"></label>
-                    </div>
-                    <div className="form-outline mb-4">
-                      <input type="email" id="typeEmailX-2" placeholder='Email' className="form-control form-control-lg" />
-                      <label className="form-label" for="typeEmailX-2"></label>
-                    </div>
-                    <div className="form-outline mb-4">
-                      <input type="password" id="typePasswordX-2" placeholder='Password' className="form-control form-control-lg" />
-                      <label className="form-label" for="typePasswordX-2"></label>
-                    </div>
-                    <div className="form-check d-flex justify-content-start mb-5">
-                      <input className="form-check-input" type="checkbox" value="" id="form1Example3" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <label className="form-check-label" for="form1Example3"> Remember password </label>
-                    </div>
-                    <button className="btn btn-primary btn-lg btn-block" type="submit">sign up</button>
-                    <hr className="my-4" />
-                    <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
-                      type="submit"><i className="fa fa-google me-2"></i> sign up with google</button>
-                    <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
-                      type="submit"><i className="fa fa-facebook me-3"></i> sign up with facebook</button>
+                    <form onSubmit={handleRegister} className="bottomBox">
+                      <h3 className="mb-5">Sign Up</h3>
+                      <div className='from-outline mb-4'>
+                        <div className="top">
+                          <img
+                            src={
+                              img
+                                ? URL.createObjectURL(img)
+                                : {DefaultProfile}
+                            }
+                            alt=""
+                            className="profileImg"
+                          />
+                          <div className="formInput">
+                            <label htmlFor="file">
+                              Image: <DriveFolderUploadOutlined className="icon" />
+                              <input
+                                type="file"
+                                name="file"
+                                id="file"
+                                accept=".png,.jpeg,.jpg"
+                                style={{ display: "none" }}
+                                onChange={(e) => setImg(e.target.files[0])}
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-outline mb-4">
+                        <input
+                          type="text"
+                          placeholder="Full Name"
+                          id="displayName"
+                          required
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" for="typeEmailX-2"></label>
+                      </div>
+                      <div className="form-outline mb-4">
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          id="email"
+                          required
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" for="typeEmailX-2"></label>
+                      </div>
+                      <div className="form-outline mb-4">
+                        <input
+                          type="password"
+                          placeholder="Password"
+                          id="password"
+                          minLength={6}
+                          required
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" for="typePasswordX-2"></label>
+                      </div>
+                      <div className="form-check d-flex justify-content-start mb-5">
+                        <input className="form-check-input" type="checkbox" value="" id="form1Example3" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label className="form-check-label" for="form1Example3" required> Remember password </label>
+                      </div>
+                      <button className="btn btn-primary btn-lg btn-block" type="submit">sign up</button>
+                      <hr className="my-4" />
+                      <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: "#dd4b39" }}
+                        type="submit"><i className="fa fa-google me-2"></i> sign up with google</button>
+                      <button className="btn btn-lg btn-block btn-primary mb-3" style={{ backgroundColor: "#3b5998" }}
+                        type="submit"><i className="fa fa-facebook me-3"></i> sign up with facebook</button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -180,7 +326,7 @@ const NavBar = ({
                   <span></span>
                 </div>
               </div>
-              <NavLink href="index-2.html"><img className="logo" src={img} alt="" width="119" height="58" /></NavLink >
+              <NavLink href="index-2.html"><img className="logo" src={img4} alt="" width="119" height="58" /></NavLink >
             </div>
             <div className="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav flex-child-menu menu-left">
@@ -217,10 +363,10 @@ const NavBar = ({
                 </li>
                 <li className="dropdown first">
                   <NavLink className="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                    community
+                    user
                   </NavLink >
                   <ul className="dropdown-menu level1">
-                    <li><Link to="/not">user favorite </Link></li>
+                    <li><Link to="/userprofile">user profile </Link></li>
                   </ul>
                 </li>
               </ul>
@@ -246,7 +392,13 @@ const NavBar = ({
           </div>
         </div>
       </header>
-
+      {loading && <div id="preloader">
+        <img class="logo" src={img4} alt="" width="119" height="58"/>
+          <div id="status">
+            <span></span>
+            <span></span>
+          </div>
+      </div>}
     </>
   )
 }

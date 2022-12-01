@@ -38,3 +38,4 @@ export const GET_MOVIE_REVIEWS = async (movie_id) => {
 }
 
 
+// https://api.themoviedb.org/3/comedy/movie/list?api_key=460ede70f28006cdd5dbe5510d0323a1

@@ -11,7 +11,7 @@ import { PopupMessage } from './components';
 export const App = () => {
     return (
         <div>
-            <Router />
+            <Router/>
             <PopupMessage />
         </div>
     );

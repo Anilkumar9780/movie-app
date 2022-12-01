@@ -12,6 +12,7 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 // package
 import { Link, NavLink } from 'react-router-dom';
 
@@ -43,23 +44,22 @@ const Footer = () => {
 
 	return (
 		<>
-
 			<div className="fixed-bottom">
 				<BottomNavigation value={value} onChange={handleChange} className={classes.root} spacing={5}>
 					<BottomNavigationAction
-						style={{ color: "whitesmoke", marginLeft:"-120px" }}
+						style={{ color: "whitesmoke", marginLeft: "-120px" }}
 						label="Movies"
 						value="Movies"
 						icon={<Link to='/' ><MovieIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
 					/>
 					<BottomNavigationAction
-						style={{ color: "whitesmoke", marginLeft:"300px" }}
+						style={{ color: "whitesmoke", marginLeft: "300px" }}
 						label="TV Show"
 						value="TV Show"
 						icon={<Link to='/tvshow' ><LiveTvIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
 					/>
 					<BottomNavigationAction
-						style={{ color: "whitesmoke", marginLeft:"350px"  }}
+						style={{ color: "whitesmoke", marginLeft: "350px" }}
 						label="Trending"
 						value="Trending"
 						icon={<Link to='/trending' ><WhatshotIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
@@ -70,37 +70,37 @@ const Footer = () => {
 				<div className="container">
 					<div className="flex-parent-ft">
 						<div className="flex-child-ft item1">
-							<NavLink href="index-2.html"><img className="logo" src={img} alt="" /></NavLink>
+							<NavLink ><img className="logo" src={img} alt="" /></NavLink>
 							<p>5th Avenue st, manhattan<br />
 								New York, NY 10001</p>
-							<p>Call us: <NavLink href="#">(+01) 202 342 6789</NavLink></p>
+							<p>Call us: <NavLink >(+01) 202 342 6789</NavLink></p>
 						</div>
 						<div className="flex-child-ft item2">
 							<h4>Resources</h4>
 							<ul>
-								<li><NavLink href="#">About</NavLink></li>
-								<li><NavLink href="#">Blockbuster</NavLink></li>
-								<li><NavLink href="#">Contact Us</NavLink></li>
-								<li><NavLink href="#">Forums</NavLink></li>
-								<li><NavLink href="#">Blog</NavLink></li>
-								<li><NavLink href="#">Help Center</NavLink></li>
+								<li><NavLink >About</NavLink></li>
+								<li><NavLink >Blockbuster</NavLink></li>
+								<li><NavLink >Contact Us</NavLink></li>
+								<li><NavLink >Forums</NavLink></li>
+								<li><NavLink >Blog</NavLink></li>
+								<li><NavLink >Help Center</NavLink></li>
 							</ul>
 						</div>
 						<div className="flex-child-ft item3">
 							<h4>Legal</h4>
 							<ul>
-								<li><NavLink href="#">Terms of Use</NavLink></li>
-								<li><NavLink href="#">Privacy Policy</NavLink></li>
-								<li><NavLink href="#">Security</NavLink></li>
+								<li><NavLink >Terms of Use</NavLink></li>
+								<li><NavLink >Privacy Policy</NavLink></li>
+								<li><NavLink >Security</NavLink></li>
 							</ul>
 						</div>
 						<div className="flex-child-ft item4">
 							<h4>Account</h4>
 							<ul>
-								<li><NavLink href="#">My Account</NavLink></li>
-								<li><NavLink href="#">Watchlist</NavLink></li>
-								<li><NavLink href="#">Collections</NavLink></li>
-								<li><NavLink href="#">User Guide</NavLink></li>
+								<li><NavLink >My Account</NavLink></li>
+								<li><NavLink >Watchlist</NavLink></li>
+								<li><NavLink >Collections</NavLink></li>
+								<li><NavLink >User Guide</NavLink></li>
 							</ul>
 						</div>
 						<div className="flex-child-ft item5">
@@ -109,16 +109,15 @@ const Footer = () => {
 							<form action="#">
 								<input type="text" placeholder="Enter your email..." />
 							</form>
-							<NavLink href="#" className="btn">Subscribe now <i className="fa fa-arrow-right"></i></NavLink>
+							<NavLink className="btn">Subscribe now <i className="fa fa-arrow-right"></i></NavLink>
 						</div>
 					</div>
 				</div>
 				<div className="ft-copyright">
 					<div className="ft-left">
-						<p><NavLink href="https://www.templateshub.net">Templates Hub</NavLink></p>
 					</div>
 					<div className="backtotop">
-						<p><NavLink href="#" id="back-to-top">Back to top <i className="fa fa-arrow-up"></i></NavLink></p>
+						<p><NavLink id="back-to-top">Back to top <i className="fa fa-arrow-up"></i></NavLink></p>
 					</div>
 				</div>
 			</footer>
