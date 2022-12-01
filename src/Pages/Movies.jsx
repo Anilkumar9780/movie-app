@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // package
 import { GET_MOVIE_LIST } from '../Service/Service';
@@ -10,14 +10,15 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Movies = () => {
     const [movieList, setMovieList] = useState([]);
-    const [currPage] = useState(1);
+    const [currPage, setCurrPage] = useState(1);
 
     /**
    *  get movie list 
    */
     const getMovieList = async () => {
+        setCurrPage(currPage + 1);
         try {
-            const { data } = await GET_MOVIE_LIST(currPage);
+            const { data } = await GET_MOVIE_LIST(currPage + 1);
             setMovieList([...movieList, ...data.results]);
         } catch (error) {
             toast.error(error, {
@@ -30,17 +31,41 @@ const Movies = () => {
         getMovieList();
     }, []);
 
-    console.log(movieList)
+    // let genreList = {
+    //     28: 'Action',
+    //     12: 'Adventure',
+    //     16: 'Animation',
+    //     35: 'Comedy',
+    //     80: 'Crime',
+    //     99: 'Documentary',
+    //     18: 'Drama',
+    //     10751: 'Family',
+    //     14: 'Fantasy',
+    //     36: 'History',
+    //     27: 'Horror',
+    //     10402: 'Music',
+    //     9648: 'Mystery',
+    //     10749: 'Romance',
+    //     878: 'Science Fiction',
+    //     10770: 'TV Movie',
+    //     53: 'Thriller',
+    //     10752: 'War',
+    //     37: 'Western'
+    // };
+
+    // console.log(genreList);
+    console.log(movieList);
+
     return (
         <>
             <InfiniteScroll
                 dataLength={movieList.length}
-                next={() => { getMovieList() }}
+                next={getMovieList}
                 hasMore={true}
                 loader={<Loader />}
-                endMessage={<h4>Nothing more to show</h4>}
+                scrollableTarget="scrollableDiv"
             >
-                {movieList && movieList?.map((movies, index) => {
+                {movieList.map((movies, index) => {
                     return <div className="col-md-3" key={index}>
                         <MovieCard
                             movie_id={movies.id}

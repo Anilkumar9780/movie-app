@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react';
 
 // component
 import { GET_TRENDING_MOVIE_LIST } from '../Service/Service';
-import { MovieCard , Loader } from '../components'
+import { MovieCard, Loader } from '../components'
 
 // package
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
- const Trending = () => {
+const Trending = () => {
   const [trendingList, setTrendingList] = useState([]);
-  const [currPage] = useState(1);
+  const [currPage, setCurrPage] = useState(1);
 
   /**
      *  get TVShow List 
      */
   const getTrendingList = async () => {
+    setCurrPage(currPage+1);
     try {
-      const { data } = await GET_TRENDING_MOVIE_LIST(currPage);
+      const { data } = await GET_TRENDING_MOVIE_LIST(currPage + 1);
       setTrendingList([...trendingList, ...data.results]);
+
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_RIGHT

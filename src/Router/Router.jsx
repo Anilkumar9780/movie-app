@@ -14,6 +14,7 @@ export const Router = () => {
     const [movieList, setMovieList] = useState([]);
     const [searchMovies, setSearchMovies] = useState('');
     const [mediaType, setMediaType] = useState();
+    const [currPage, setCurrPage] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
     const pathid = location.pathname.split('/moviedetails/');
@@ -31,8 +32,9 @@ export const Router = () => {
      * submit handle search 
     */
     const handlesearch = async () => {
+        setCurrPage(currPage + 1)
         try {
-            const { data } = await GET_SERACH_LIST(mediaType, searchMovies);
+            const { data } = await GET_SERACH_LIST(mediaType, searchMovies, currPage + 1);
             setMovieList(data.results);
             navigate('/search');
         } catch (error) {

@@ -50,7 +50,7 @@ const Footer = () => {
 						style={{ color: "whitesmoke", marginLeft: "-120px" }}
 						label="Movies"
 						value="Movies"
-						icon={<Link to='/' ><MovieIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
+						icon={<Link to='/movies' ><MovieIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
 					/>
 					<BottomNavigationAction
 						style={{ color: "whitesmoke", marginLeft: "300px" }}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // package
 import { GET_TVSHOW_LIST } from '../Service/Service';
-import { MovieCard , Loader } from '../components'
+import { MovieCard, Loader } from '../components'
 
 // package
 import { toast } from 'react-toastify';
@@ -10,14 +10,15 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const TvShow = () => {
     const [tvShowList, setTvShowList] = useState([]);
-    const [currPage] = useState(1);
+    const [currPage, setCurrPage] = useState(1);
 
     /**
        *  get TVShow List 
        */
     const getTVShowList = async () => {
+        setCurrPage(currPage + 1)
         try {
-            const { data } = await GET_TVSHOW_LIST(currPage);
+            const { data } = await GET_TVSHOW_LIST(currPage + 1);
             setTvShowList([...tvShowList, ...data.results]);
         } catch (error) {
             toast.error(error, {

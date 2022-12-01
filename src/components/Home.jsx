@@ -9,7 +9,7 @@ import Tweet from '../img/tweet.png'
 import { Movies, Trending, TvShow, Search } from '../Pages';
 
 //packages
-import { Routes, Route, NavLink, Link  } from "react-router-dom";
+import { Routes, Route, NavLink, Link } from "react-router-dom";
 
 const Home = ({
     movieList,
@@ -53,6 +53,7 @@ const Home = ({
                             <div className="flex-wrap-movielist">
                                 <Routes>
                                     <Route exact path='/' element={<Movies />} />
+                                    <Route exact path='/movies' element={<Movies />} />
                                     <Route exact path='/trending' element={<Trending />} />
                                     <Route exact path='/tvshow' element={<TvShow />} />
                                     <Route exact path='/search' element={<Search movieList={movieList} handlesearch={handlesearch} />} />
