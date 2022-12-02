@@ -38,7 +38,6 @@ const Movies = () => {
                 next={getMovieList}
                 hasMore={true}
                 loader={<Loader />}
-                scrollableTarget="scrollableDiv"
             >
                 {movieList.map((movies, index) => {
                     return <div className="col-md-3" key={index}>

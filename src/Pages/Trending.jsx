@@ -16,7 +16,7 @@ const Trending = () => {
      *  get TVShow List 
      */
   const getTrendingList = async () => {
-    setCurrPage(currPage+1);
+    setCurrPage(currPage + 1);
     try {
       const { data } = await GET_TRENDING_MOVIE_LIST(currPage + 1);
       setTrendingList([...trendingList, ...data.results]);
@@ -44,11 +44,9 @@ const Trending = () => {
         hasMore={true}
         loader={<Loader />}
         endMessage={<h4>Nothing more to show</h4>}
-        // scrollThreshold={0.5}
-        scrollableTarget="scrollableDiv"
       >
         {trendingList.map((movies, index) => {
-          return <div className="col-md-3 col-sm-3" key={index}>
+          return <div className="col-md-3 " key={index}>
             <MovieCard
               movie_id={movies.id}
               first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}

@@ -13,8 +13,8 @@ const TvShow = () => {
     const [currPage, setCurrPage] = useState(1);
 
     /**
-       *  get TVShow List 
-       */
+     *  get TVShow List 
+     */
     const getTVShowList = async () => {
         setCurrPage(currPage + 1)
         try {
@@ -44,8 +44,6 @@ const TvShow = () => {
                 hasMore={true}
                 loader={<Loader />}
                 endMessage={<h4>Nothing more to show</h4>}
-                scrollThreshold={0.5}
-                scrollableTarget="scrollableDiv"
             >
                 {tvShowList.map((movies, index) => {
                     return <div className="col-md-3" key={index}>

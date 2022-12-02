@@ -4,25 +4,24 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 //component
-import { MovieCard , Loader } from '../components'
+import { MovieCard, Loader } from '../components'
 
 const Search = ({
-    movieList,
+    searchMovieList,
     handlesearch
 }) => {
-    console.log(movieList)
+    console.log(searchMovieList)
     return (
         <>
             <InfiniteScroll
-                dataLength={movieList.length}
+                dataLength={searchMovieList.length}
                 next={handlesearch}
                 hasMore={true}
                 loader={<Loader />}
                 endMessage={<h4>Nothing more to show</h4>}
-                scrollableTarget="scrollableDiv"
             >
-                {movieList.map((movies, index) => {
-                    return <div className="col-md-3 col-sm-3" key={index}>
+                {searchMovieList.map((movies, index) => {
+                    return <div className="col-md-3" key={index}>
                         <MovieCard
                             movie_id={movies.id}
                             first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}

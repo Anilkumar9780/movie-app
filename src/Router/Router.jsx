@@ -11,14 +11,15 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 export const Router = () => {
-    const [movieList, setMovieList] = useState([]);
+    const [searchMovieList, setSearchMovieList] = useState([]);
     const [searchMovies, setSearchMovies] = useState('');
+    const [medType, setMedType] = useState('');
     const [mediaType, setMediaType] = useState();
     const [currPage, setCurrPage] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
     const pathid = location.pathname.split('/moviedetails/');
-    const [medType, setMedType] = useState('');
+
 
     /** 
      * onchange input search  
@@ -31,11 +32,11 @@ export const Router = () => {
     /**
      * submit handle search 
     */
-    const handlesearch = async () => {
+    const handleSearch = async () => {
         setCurrPage(currPage + 1)
         try {
             const { data } = await GET_SERACH_LIST(mediaType, searchMovies, currPage + 1);
-            setMovieList(data.results);
+            setSearchMovieList(data.results);
             navigate('/search');
             setSearchMovies('')
         } catch (error) {
@@ -50,7 +51,7 @@ export const Router = () => {
         <>
             <NavBar
                 handleSelectOnchange={handleSelectOnchange}
-                handlesearch={handlesearch}
+                handleSearch={handleSearch}
                 mediaType={mediaType}
                 setSearchMovies={setSearchMovies}
                 setMediaType={setMediaType}
@@ -64,7 +65,7 @@ export const Router = () => {
                             <Route path='*' exact={true} element={<NotFoundPage />} />
                         </Routes>
                     ) : (
-                        <Home movieList={movieList} handlesearch={handlesearch} />
+                        <Home searchMovieList={searchMovieList} handleSearch={handleSearch} />
                     )
             }
             <Footer

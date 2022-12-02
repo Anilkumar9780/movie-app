@@ -13,7 +13,7 @@ import { Movies, Trending, TvShow, Search } from '../Pages';
 import { Routes, Route, NavLink, Link } from "react-router-dom";
 
 const Home = ({
-    movieList,
+    searchMovieList,
     handlesearch
 }) => {
     //ref div
@@ -58,8 +58,8 @@ const Home = ({
                                     <option value="date">Release date Descending</option>
                                     <option value="date">Release date Ascending</option>
                                 </select>
-                                <NavLink  className="list"><i className="ion-ios-list-outline "></i></NavLink>
-                                <NavLink  className="grid"><i className="ion-grid active"></i></NavLink>
+                                <NavLink className="list"><i className="ion-ios-list-outline "></i></NavLink>
+                                <NavLink className="grid"><i className="ion-grid active"></i></NavLink>
                             </div>
                             <div className="flex-wrap-movielist">
                                 <Routes>
@@ -67,7 +67,7 @@ const Home = ({
                                     <Route exact path='/movies' element={<Movies />} />
                                     <Route exact path='/trending' element={<Trending />} />
                                     <Route exact path='/tvshow' element={<TvShow />} />
-                                    <Route exact path='/search' element={<Search movieList={movieList} handlesearch={handlesearch} />} />
+                                    <Route exact path='/search' element={<Search searchMovieList={searchMovieList} handlesearch={handlesearch} />} />
                                 </Routes>
                             </div>
                         </div>
@@ -146,8 +146,8 @@ const Home = ({
                     </div>
                 </div>
             </div>
-            <div className="fixed-bottom" style={{ width:"100px", height:"50px"}}>
-                <p style={{marginTop:"-100px", marginLeft:"1800px",}}>
+            <div className="fixed-bottom" style={{ width: "100px", height: "50px" }}>
+                <p style={{ marginTop: "-100px", marginLeft: "1800px", }}>
                     <a className='btn btn-outline-primary' onClick={handleonScrollTop} style={{ cursor: "pointer" }}>Back to top <i className="fa fa-arrow-up"></i></a>
                 </p>
             </div>

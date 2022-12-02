@@ -19,7 +19,7 @@ import item4 from '../img/uploads/vd-item4.jpg'
 
 
 //packages
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ReactStars from "react-rating-stars-component";
