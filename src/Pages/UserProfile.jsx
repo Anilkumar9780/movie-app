@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 
 //images
 import user from '../img/uploads/user-img.png';
-import movie from '../img/uploads/mv1.jpg'
+import movie from '../img/uploads/mv1.jpg';
+
+//packages
+import { Link } from 'react-router-dom';
 
 const UserProfile = () => {
     const [openTab, setOpenTab] = useState(1);
@@ -16,7 +19,7 @@ const UserProfile = () => {
                             <div className="hero-ct">
                                 <h1>Edward kennedy’s profile</h1>
                                 <ul className="breadcumb">
-                                    <li className="active"><a href="#">Home</a></li>
+                                    <li className="active"><Link to='/'>Home</Link></li>
                                     <li> <span className="ion-ios-arrow-right"></span>Profile</li>
                                 </ul>
                             </div>
@@ -36,15 +39,40 @@ const UserProfile = () => {
                                 <div className="user-fav">
                                     <p>Account Details</p>
                                     <ul>
-                                        <li className={openTab === 1 ? "active" : ""}><a href="userprofile" onClick={e => { e.preventDefault(); setOpenTab(1); }}>Profile</a></li>
-                                        <li className={openTab === 2 ? "active" : ""} ><a href='userfavorite' onClick={e => { e.preventDefault(); setOpenTab(2); }}>Favorite movies</a></li>
-                                        <li className={openTab === 3 ? "active" : ""}><a href='userratedmovie' onClick={e => { e.preventDefault(); setOpenTab(3); }}>Rated movies</a></li>
+                                        {/* tab button profile */}
+                                        <li className={openTab === 1 ? "active" : ""}>
+                                            <a
+                                                href="userprofile"
+                                                onClick={e => { e.preventDefault(); setOpenTab(1); }}
+                                            >
+                                                Profile
+                                            </a>
+                                        </li>
+                                        {/* tab button userFavorite mvoies */}
+                                        <li className={openTab === 2 ? "active" : ""} >
+                                            <a
+                                                href='userfavorite'
+                                                onClick={e => { e.preventDefault(); setOpenTab(2); }}
+                                            >
+                                                Favorite movies
+                                            </a>
+                                        </li>
+                                        {/* tab button user rate movie */}
+                                        <li className={openTab === 3 ? "active" : ""}>
+                                            <a
+                                                href='userratedmovie'
+                                                onClick={e => { e.preventDefault(); setOpenTab(3); }}
+                                            >
+                                                Rated movies
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div className="user-fav">
                                     <p>Others</p>
+                                    {/* logout button */}
                                     <ul>
-                                        <li><a href="#">Log out</a></li>
+                                        <li><Link to='/'>Log out</Link></li>
                                     </ul>
                                 </div>
                             </div>

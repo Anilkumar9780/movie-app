@@ -5,7 +5,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
-
 const MovieCard = ({
     // get props
     poster_path,
@@ -13,18 +12,23 @@ const MovieCard = ({
     vote_average,
     movie_id
 }) => {
+
+
     return (
         <>
-            <div className="movie-item-style-2 movie-item-style-1">
-                <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
+            <div className="movie-item-style-2 movie-item-style-1" >
+                {poster_path ?
+                    <img src={"https://image.tmdb.org/t/p/w500" + poster_path} alt={poster_path} />
+                    :
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Noimage.svg/739px-Noimage.svg.png" alt='..' />
+                }
                 <Link to={`/moviedetails/${movie_id}`} >
                     <div className="hvr-inner">
-                        <a> Read more <i className="ion-android-arrow-dropright"></i> </a>
+                        <a> Read more <i className="ion-android-arrow-dropright"></i></a>
                     </div>
                 </Link>
                 <div className="mv-item-infor">
                     <h6><a>{name}</a></h6>
-                    {/* <p><span style={{ color: "red" }}>{media_type}</span></p> */}
                     <p className="rate"><i className="ion-android-star"></i><span> {vote_average}</span> /10</p>
                 </div>
             </div>
@@ -33,6 +37,7 @@ const MovieCard = ({
 }
 
 export default MovieCard;
+
 /**
  *  Props types for our Component
  */

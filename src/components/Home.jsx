@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useRef } from 'react';
 
 // images
 import img2 from '../img/uploads/ads1.png'
@@ -15,8 +16,18 @@ const Home = ({
     movieList,
     handlesearch
 }) => {
+    //ref div
+    const divRef = useRef(null);
+
+    /**
+     * Back to top button 
+     */
+    const handleonScrollTop = () => {
+        divRef.current.scrollIntoView({ behavior: "smooth" })
+    };
+
     return (
-        <>
+        <div ref={divRef}>
             <div className="hero common-hero">
                 <div className="container">
                     <div className="row">
@@ -24,7 +35,7 @@ const Home = ({
                             <div className="hero-ct">
                                 <h1> movie listing - grid</h1>
                                 <ul className="breadcumb">
-                                    <li className="active"><Link to="/"  >Home</Link></li>
+                                    <li className="active"><Link to="/" >Home</Link></li>
                                     <li> <span className="ion-ios-arrow-right"></span> movie listing</li>
                                 </ul>
                             </div>
@@ -47,8 +58,8 @@ const Home = ({
                                     <option value="date">Release date Descending</option>
                                     <option value="date">Release date Ascending</option>
                                 </select>
-                                <NavLink href="movielist.html" className="list"><i className="ion-ios-list-outline "></i></NavLink>
-                                <NavLink href="moviegrid.html" className="grid"><i className="ion-grid active"></i></NavLink>
+                                <NavLink  className="list"><i className="ion-ios-list-outline "></i></NavLink>
+                                <NavLink  className="grid"><i className="ion-grid active"></i></NavLink>
                             </div>
                             <div className="flex-wrap-movielist">
                                 <Routes>
@@ -135,7 +146,12 @@ const Home = ({
                     </div>
                 </div>
             </div>
-        </ >
+            <div className="fixed-bottom" style={{ width:"100px", height:"50px"}}>
+                <p style={{marginTop:"-100px", marginLeft:"1800px",}}>
+                    <a className='btn btn-outline-primary' onClick={handleonScrollTop} style={{ cursor: "pointer" }}>Back to top <i className="fa fa-arrow-up"></i></a>
+                </p>
+            </div>
+        </div>
     )
 }
 export default Home;

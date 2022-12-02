@@ -10,7 +10,7 @@ const Search = ({
     movieList,
     handlesearch
 }) => {
-    // console.log(movieList)
+    console.log(movieList)
     return (
         <>
             <InfiniteScroll
@@ -19,7 +19,6 @@ const Search = ({
                 hasMore={true}
                 loader={<Loader />}
                 endMessage={<h4>Nothing more to show</h4>}
-                scrollThreshold={0.5}
                 scrollableTarget="scrollableDiv"
             >
                 {movieList.map((movies, index) => {

@@ -49,6 +49,7 @@ const NavBar = ({
    */
   const handleClickLogin = () => {
     setOpens(true);
+    setOpen(false)
   };
 
   /**
@@ -56,6 +57,7 @@ const NavBar = ({
    */
   const handleClicksignUp = () => {
     setOpen(true);
+    setOpens(false)
   };
 
   /**
@@ -175,10 +177,10 @@ const NavBar = ({
           <div className="container py-5 h-100">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
+                <div className="card shadow-2-strong" style={{ borderRadius: "1rem", backgroundColor: "#041424" }}>
                   <div className="card-body p-5 text-center">
-                    <NavLink href="#" onClick={handleClose} className="close">x</NavLink >
-                    <form onSubmit={handleLogin} className="bottomBox">
+                    <NavLink onClick={handleClose} className="close">x</NavLink >
+                    <form onSubmit={handleLogin} className="form-style-1">
                       <h3 className="mb-5">Login</h3>
                       <div className="form-outline mb-4">
                         <input
@@ -222,18 +224,19 @@ const NavBar = ({
       {/* sign up page modal */}
       <Modal
         open={open}
+        fullScreen={fullScreen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <section className="vh" style={{ marginTop: "200px" }}>
+        <section className="vh" style={{ marginTop: "120px" }}>
           <div className="container py-5 h-100">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div className="card shadow-2-strong" style={{ borderRadius: "1rem" }}>
+                <div className="card shadow-2-strong" style={{ borderRadius: "1rem", backgroundColor: "#041424" }}>
                   <div className="card-body p-5 text-center">
                     <NavLink onClick={handleClose} className="close">x</NavLink >
-                    <form onSubmit={handleRegister} className="bottomBox">
+                    <form onSubmit={handleRegister} className="form-style-1">
                       <h3 className="mb-5">Sign Up</h3>
                       <div className='from-outline mb-4'>
                         <div className="top">
@@ -241,7 +244,7 @@ const NavBar = ({
                             src={
                               img
                                 ? URL.createObjectURL(img)
-                                : {DefaultProfile}
+                                : { DefaultProfile }
                             }
                             alt=""
                             className="profileImg"
@@ -393,11 +396,11 @@ const NavBar = ({
         </div>
       </header>
       {loading && <div id="preloader">
-        <img class="logo" src={img4} alt="" width="119" height="58"/>
-          <div id="status">
-            <span></span>
-            <span></span>
-          </div>
+        <img class="logo" src={img4} alt="" width="119" height="58" />
+        <div id="status">
+          <span></span>
+          <span></span>
+        </div>
       </div>}
     </>
   )

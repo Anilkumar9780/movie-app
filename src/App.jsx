@@ -9,6 +9,7 @@ import { Router } from './Router/Router';
 import { PopupMessage } from './components';
 
 export const App = () => {
+
     return (
         <div>
             <Router/>
@@ -16,4 +17,5 @@ export const App = () => {
         </div>
     );
 }
+
 

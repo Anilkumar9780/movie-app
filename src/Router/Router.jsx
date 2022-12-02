@@ -18,7 +18,7 @@ export const Router = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const pathid = location.pathname.split('/moviedetails/');
-
+    const [medType, setMedType] = useState('');
 
     /** 
      * onchange input search  
@@ -37,6 +37,7 @@ export const Router = () => {
             const { data } = await GET_SERACH_LIST(mediaType, searchMovies, currPage + 1);
             setMovieList(data.results);
             navigate('/search');
+            setSearchMovies('')
         } catch (error) {
             toast.error(error, {
                 position: toast.POSITION.TOP_RIGHT
@@ -59,14 +60,17 @@ export const Router = () => {
                     (
                         <Routes>
                             <Route exact path='/userprofile' element={<UserProfile />} />
-                            <Route exact path='/moviedetails/:movie_id' element={<MovieDetails />} />
+                            <Route exact path='/moviedetails/:movie_id' element={<MovieDetails medType={medType} />} />
                             <Route path='*' exact={true} element={<NotFoundPage />} />
                         </Routes>
                     ) : (
                         <Home movieList={movieList} handlesearch={handlesearch} />
                     )
             }
-            <Footer />
+            <Footer
+                medType={medType}
+                setMedType={setMedType}
+            />
         </>
     )
 }

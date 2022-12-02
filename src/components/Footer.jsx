@@ -27,7 +27,9 @@ const useStyles = makeStyles({
 	},
 });
 
-const Footer = () => {
+const Footer = ({
+	setMedType
+}) => {
 	//states
 	const classes = useStyles();
 	const [value, setValue] = useState('');
@@ -45,24 +47,50 @@ const Footer = () => {
 	return (
 		<>
 			<div className="fixed-bottom">
-				<BottomNavigation value={value} onChange={handleChange} className={classes.root} spacing={5}>
+				<BottomNavigation
+					value={value}
+					onChange={handleChange}
+					className={classes.root}
+					spacing={5}
+				>
 					<BottomNavigationAction
 						style={{ color: "whitesmoke", marginLeft: "-120px" }}
 						label="Movies"
 						value="Movies"
-						icon={<Link to='/movies' ><MovieIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
+						icon={
+							<Link to='/movies' >
+								<MovieIcon
+									onClick={(e) => setMedType('movie')}
+									style={{ fontSize: 31, color: "#abb7c4" }}
+								/>
+							</Link>
+						}
 					/>
 					<BottomNavigationAction
 						style={{ color: "whitesmoke", marginLeft: "300px" }}
 						label="TV Show"
 						value="TV Show"
-						icon={<Link to='/tvshow' ><LiveTvIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
+						icon={
+							<Link to='/tvshow' >
+								<LiveTvIcon
+									onClick={(e) => setMedType('tv')}
+									style={{ fontSize: 31, color: "#abb7c4" }}
+								/>
+							</Link>
+						}
 					/>
 					<BottomNavigationAction
 						style={{ color: "whitesmoke", marginLeft: "350px" }}
 						label="Trending"
 						value="Trending"
-						icon={<Link to='/trending' ><WhatshotIcon style={{ fontSize: 31, color: "#abb7c4" }} /></Link>}
+						icon={
+							<Link to='/trending' >
+								<WhatshotIcon
+									onClick={(e) => setMedType('movie')}
+									style={{ fontSize: 31, color: "#abb7c4" }}
+								/>
+							</Link>
+						}
 					/>
 				</BottomNavigation>
 			</div>
@@ -121,7 +149,7 @@ const Footer = () => {
 					</div>
 				</div>
 			</footer>
-
+			{/*  */}
 		</>
 	)
 }

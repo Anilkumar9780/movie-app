@@ -19,7 +19,7 @@ import item4 from '../img/uploads/vd-item4.jpg'
 
 
 //packages
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ReactStars from "react-rating-stars-component";
@@ -28,7 +28,7 @@ import ReactStars from "react-rating-stars-component";
 import { GET_MOVIE_DETAIL, GET_MOVIE_LIST, GET_MOVIE_REVIEWS, } from '../Service/Service';
 import { Loader } from '../components';
 
-const MovieDetails = () => {
+const MovieDetails = ({ medType }) => {
   //states
   const [movies, setMovies] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -43,7 +43,7 @@ const MovieDetails = () => {
    */
   const getMovieDeatil = async () => {
     try {
-      const { data } = await GET_MOVIE_DETAIL(id);
+      const { data } = await GET_MOVIE_DETAIL(id, medType);
       setMovies(data);
     } catch (error) {
       toast.error(error, {
@@ -57,7 +57,7 @@ const MovieDetails = () => {
    */
   const getMovieReviews = async () => {
     try {
-      const { data } = await GET_MOVIE_REVIEWS(id);
+      const { data } = await GET_MOVIE_REVIEWS(id, medType);
       setReviews(data.results)
     } catch (error) {
       toast.error(error, {
@@ -90,6 +90,9 @@ const MovieDetails = () => {
     getMovieReviews()
   }, []);
 
+  //poster path
+  const moviePoster = movies.poster_path ? movies.poster_path : movies.backdrop_path;
+
   return (
     <>
       <div className="hero sr-single-hero sr-single">
@@ -105,19 +108,23 @@ const MovieDetails = () => {
           <div className="row ipad-width2">
             <div className="col-md-4 col-sm-12 col-xs-12">
               <div className="movie-img sticky-sb">
-                <img src={"https://image.tmdb.org/t/p/w500" + movies.poster_path} alt={movies.poster_path} />
+                {movies.poster_path ?
+                  <img src={"https://image.tmdb.org/t/p/w500" + moviePoster} alt={moviePoster} />
+                  :
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Noimage.svg/739px-Noimage.svg.png" alt='..' />
+                }
                 <div className="movie-btn">
                   <div className="btn-transform transform-vertical red">
-                    <div><a href="#" className="item item-1 redbtn"> <i className="ion-play"></i> Watch Trailer</a>
+                    <div><a className="item item-1 redbtn"> <i className="ion-play"></i> Watch Trailer</a>
                     </div>
-                    <div><a href="#"
+                    <div><a
                       className="item item-2 redbtn fancybox-media hvr-grow"><i className="ion-play"></i></a>
                     </div>
                   </div>
                   <div className="btn-transform transform-vertical">
-                    <div><a href="#" className="item item-1 yellowbtn"> <i className="ion-card"></i> Buy ticket</a>
+                    <div><a className="item item-1 yellowbtn"> <i className="ion-card"></i> Buy ticket</a>
                     </div>
-                    <div><a href="#" className="item item-2 yellowbtn"><i className="ion-card"></i></a></div>
+                    <div><a className="item item-2 yellowbtn"><i className="ion-card"></i></a></div>
                   </div>
                 </div>
               </div>
@@ -126,9 +133,9 @@ const MovieDetails = () => {
               <div className="movie-single-ct main-content">
                 <h1 className="bd-hd">{movies.original_name ? movies.original_name : movies.original_title} ({movies.original_language})<span> {movies.first_air_date ? movies.first_air_date : movies.release_date}</span></h1>
                 <div className="social-btn">
-                  <a href="#" className="parent-btn"><i className="ion-heart"></i> Add to Favorite</a>
+                  <a className="parent-btn"><i className="ion-heart"></i> Add to Favorite</a>
                   <div className="hover-bnt">
-                    <a href="#" className="parent-btn"><i className="ion-android-share-alt"></i>share</a>
+                    <a className="parent-btn"><i className="ion-android-share-alt"></i>share</a>
                     <div className="hvr-item">
                       <a href="https://www.facebook.com" className="hvr-grow"><i className="ion-social-facebook"></i></a>
                       <a href="https://twitter.com/explore" className="hvr-grow"><i className="ion-social-twitter"></i></a>
@@ -147,7 +154,7 @@ const MovieDetails = () => {
                   <div className="rate-star">
                     <p>Rate This Movie: </p>
                     {/* rating star mapping */}
-                    <div className="no-star">
+                    <div className="star">
                       <ReactStars
                         count={10}
                         size={20}
@@ -312,7 +319,7 @@ const MovieDetails = () => {
                               <h2 >{movies.original_name ? movies.original_name : movies.original_title}</h2>
                               &nbsp; &nbsp;&nbsp;
                             </div>
-                            <a href="#" className="redbtn" style={{ marginLeft: "210px" }}>Write Review</a>
+                            <a href="#" className="redbtn" style={{ marginLeft: "345px" }}>Write Review</a>
                           </div>
                           <div className="topbar-filter">
                             <p>Found <span>{reviews.length} reviews</span> in total</p>
@@ -599,7 +606,13 @@ const MovieDetails = () => {
                           >
                             {reatedMovie.map((movie, index) => {
                               return <div className="movie-item-style-2" key={index}>
-                                <img src={"https://image.tmdb.org/t/p/w500" + movie.poster_path} alt={movie.poster_path} />
+                                {movie.poster_path ?
+                                  <img src={"https://image.tmdb.org/t/p/w500" + movie.poster_path} alt={movie.poster_path} />
+                                  :
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Noimage.svg/739px-Noimage.svg.png" alt='..' />
+                                }
+
+                                {/* <img src={"https://image.tmdb.org/t/p/w500" + movie.poster_path} alt={movie.poster_path} /> */}
                                 <div className="mv-item-infor">
                                   <h6><a href="#">{movie.original_name ? movie.original_name : movie.original_title}  ({movie.original_language})  <span>{movie.first_air_date ? movie.first_air_date : movie.release_date.toString(0.4)}</span></a></h6>
                                   <p className="rate">

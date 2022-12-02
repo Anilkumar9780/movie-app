@@ -34,7 +34,7 @@ const TvShow = () => {
         getTVShowList();
     }, [])
 
-    // console.log(tvShowList)
+    console.log(tvShowList)
 
     return (
         <>
@@ -48,7 +48,7 @@ const TvShow = () => {
                 scrollableTarget="scrollableDiv"
             >
                 {tvShowList.map((movies, index) => {
-                    return <div className="col-md-3 col-sm-3" key={index}>
+                    return <div className="col-md-3" key={index}>
                         <MovieCard
                             movie_id={movies.id}
                             first_air_date={movies.first_air_date ? movies.first_air_date : movies.release_date}
