@@ -113,6 +113,8 @@ const NavBar = ({
       })
       setLoading(false);
     }
+    setOpen(false)
+    setOpens(false)
   };
 
   /**
@@ -160,6 +162,8 @@ const NavBar = ({
       position: toast.POSITION.TOP_RIGHT
     });
     setLoading(false);
+    setOpen(false)
+    setOpens(false)
   };
 
 
@@ -407,3 +411,4 @@ const NavBar = ({
 }
 
 export default NavBar;
+

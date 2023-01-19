@@ -13,8 +13,8 @@ const Trending = () => {
   const [currPage, setCurrPage] = useState(1);
 
   /**
-     *  get TVShow List 
-     */
+   *  get TVShow List 
+   */
   const getTrendingList = async () => {
     setCurrPage(currPage + 1);
     try {
@@ -29,8 +29,8 @@ const Trending = () => {
   };
 
   /**
-     * passing dep
-     */
+   * passing dep
+   */
   useEffect(() => {
     getTrendingList();
   }, []);

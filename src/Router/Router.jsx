@@ -27,7 +27,7 @@ export const Router = () => {
      */
     const handleSelectOnchange = (event) => {
         setMediaType(event.target.value);
-    };
+    }
 
     /**
      * submit handle search 
